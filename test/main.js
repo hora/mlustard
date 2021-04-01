@@ -149,11 +149,94 @@ describe('mlustard', () => {
 
     it('should not count score when a hit has no rbi from s12 onwards', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.hitButNoScore);
+
       assert.property(analysis, 'hit');
       assert.isObject(analysis.hit);
       assert.propertyVal(analysis.hit, 'kind', 'single');
       assert.propertyVal(analysis.hit, 'rbi', 0);
     });
+
+    it('should register a successful steal', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'success', true);
+    });
+
+    it('should register a steal, with runs scored if last base stolen', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'runsScored', 1);
+    });
+
+    it('should register a steal of fourth base', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'baseStolen', 3);
+    });
+
+    it('should register a steal, with no runs scored if last base not stolen', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.stealSecond);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'baseStolen', 1);
+      assert.propertyVal(analysis.steal, 'runsScored', 0);
+    });
+
+    it('should register a steal of home, with a score of 1', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.stealHome);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'baseStolen', 3);
+      assert.propertyVal(analysis.steal, 'runsScored', 1);
+    });
+
+    it('should register a player was caught stealing, with an out on the play', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.caughtStealing);
+
+      assert.property(analysis, 'steal');
+      assert.isObject(analysis.steal);
+      assert.propertyVal(analysis.steal, 'isSteal', true);
+      assert.propertyVal(analysis.steal, 'success', false);
+      assert.propertyVal(analysis.steal, 'baseStolen', 2);
+      assert.propertyVal(analysis.steal, 'runsScored', 0);
+      assert.property(analysis, 'out');
+      assert.isObject(analysis.out);
+      assert.propertyVal(analysis.out, 'isOut', true);
+      assert.propertyVal(analysis.out, 'kind', 'caughtStealing');
+    });
+
+    it('should register a walk on the play, with no score if there was not one', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.walk);
+
+      assert.property(analysis, 'walk');
+      assert.isObject(analysis.walk);
+      assert.propertyVal(analysis.walk, 'scores', 0);
+    });
+
+    it('should register a walk on the play, with the score calculated if runners made home', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.walkScore);
+
+      assert.property(analysis, 'walk');
+      assert.isObject(analysis.walk);
+      assert.propertyVal(analysis.walk, 'scores', 1);
+    });
+
+    // todo: add a test to make sure no errors are thrown on any past game
+    // events, starting from the latest season backwards (since new stuff is
+    // more likely to break it)
 
   });
 });
