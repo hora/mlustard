@@ -76,5 +76,84 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'gameStatus', 'firstHalfInningStart');
     });
 
+    it('should return an obj with a hit prop', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.hit);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+    });
+
+    it('should specify that a single was hit, and count the rbi', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.single);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'single');
+      assert.propertyVal(analysis.hit, 'rbi', 0);
+    });
+
+    it('should specify that a double was hit, and count the rbi', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.dbl);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'double');
+      assert.propertyVal(analysis.hit, 'rbi', 1);
+    });
+
+    it('should specify that a triple was hit', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.triple);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'triple');
+      assert.propertyVal(analysis.hit, 'rbi', 0);
+    });
+
+    it('should specify that a home run was hit, counting all rbi', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.homeRun);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'homeRun');
+      assert.propertyVal(analysis.hit, 'rbi', 3);
+    });
+
+    it('should specify that a solo home run was hit, counting all rbi pre s12', () => {
+      const solo = mlustard.analyzeGameEvent(gameEvents.soloHR);
+
+      assert.property(solo, 'hit');
+      assert.isObject(solo.hit);
+      assert.propertyVal(solo.hit, 'kind', 'homeRun');
+      assert.propertyVal(solo.hit, 'rbi', 1);
+    });
+
+    it('should specify that a 2-run home run was hit, counting all rbi pre s12', () => {
+      const twoRun = mlustard.analyzeGameEvent(gameEvents.twoRunHR);
+
+      assert.property(twoRun, 'hit');
+      assert.isObject(twoRun.hit);
+      assert.propertyVal(twoRun.hit, 'kind', 'homeRun');
+      assert.propertyVal(twoRun.hit, 'rbi', 2);
+    });
+
+    it('should specify that a home run landed in a big bucket, counting rbi', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.bigBucket);
+
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'homeRun');
+      assert.propertyVal(analysis.hit, 'bigBucket', true);
+      assert.propertyVal(analysis.hit, 'rbi', 3);
+    });
+
+    it('should not count score when a hit has no rbi from s12 onwards', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.hitButNoScore);
+      assert.property(analysis, 'hit');
+      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis.hit, 'kind', 'single');
+      assert.propertyVal(analysis.hit, 'rbi', 0);
+    });
+
   });
 });
