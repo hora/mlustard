@@ -223,20 +223,24 @@ describe('mlustard', () => {
 
       assert.property(analysis, 'walk');
       assert.isObject(analysis.walk);
-      assert.propertyVal(analysis.walk, 'scores', 0);
+      assert.propertyVal(analysis.walk, 'isWalk', true);
+      assert.propertyVal(analysis.walk, 'runsScored', 0);
     });
 
     it('should register a walk on the play, with the score calculated if runners made home', () => {
-      const analysis = mlustard.analyzeGameEvent(gameEvents.walkScore);
+      const analysis = mlustard.analyzeGameEvent(gameEvents.walkScores);
 
       assert.property(analysis, 'walk');
       assert.isObject(analysis.walk);
-      assert.propertyVal(analysis.walk, 'scores', 1);
+      assert.propertyVal(analysis.walk, 'isWalk', true);
+      assert.propertyVal(analysis.walk, 'runsScored', 1);
     });
 
     // todo: add a test to make sure no errors are thrown on any past game
     // events, starting from the latest season backwards (since new stuff is
     // more likely to break it)
+    //
+    // todo: check for sacrifice outs with scores
 
   });
 });

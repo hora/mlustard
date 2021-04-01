@@ -54,7 +54,17 @@ const initAnalysis = (eventData) => {
       baseStolen: null,
       // how many runs were scored as a result
       runsScored: 0,
-    }
+    },
+
+    // --- Walks
+    // ---------
+    // collects information about the walk on the play
+    walk: {
+      // true when there is a walk on the play
+      isWalk: false,
+      // how many walks were scored as a result
+      runsScored: 0,
+    },
   };
 };
 
@@ -251,6 +261,26 @@ const doStealsCheck = (eventData) => {
 
 };
 
+const doWalksCheck = (eventData) => {
+  const updateText = eventData.lastUpdate || '';
+
+  if (
+    updateText.indexOf('draws a walk') >= 0
+  ) {
+    analysis.walk.isWalk = true;
+
+    // check if any runs were scored on the play
+    if (
+      updateText.indexOf('scores') >= 0
+    ) {
+      analysis.walk.runsScored = 1;
+    }
+    return true;
+  }
+
+  return false;
+};
+
 const analyzeGameEvent = (eventData) => {
   if (!eventData) { return null }
 
@@ -261,6 +291,10 @@ const analyzeGameEvent = (eventData) => {
   doHitsCheck(eventData);
 
   if (doStealsCheck(eventData)) {
+    return analysis;
+  }
+
+  if (doWalksCheck(eventData)) {
     return analysis;
   }
 
