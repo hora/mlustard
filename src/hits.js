@@ -4,7 +4,7 @@ const checkHitRbiPreS12 = (analysis, updateText) => {
   let match = updateText.match(/! (\d+) scores/);
 
   if (match) {
-    analysis.hit.rbi = parseInt(match[1]);
+    analysis.runsScored = parseInt(match[1]);
     return;
   }
 
@@ -12,7 +12,7 @@ const checkHitRbiPreS12 = (analysis, updateText) => {
   if (
     updateText.indexOf('solo home run') >= 0
   ) {
-    analysis.hit.rbi = 1;
+    analysis.runsScored = 1;
     return;
   }
 
@@ -21,7 +21,7 @@ const checkHitRbiPreS12 = (analysis, updateText) => {
   match = updateText.match(/(\d+)-run home run/);
 
   if (match) {
-    analysis.hit.rbi = parseInt(match[0]);
+    analysis.runsScored = parseInt(match[0]);
     return;
   }
 };
@@ -32,34 +32,34 @@ const check = (analysis, eventData) => {
   if (
     updateText.indexOf('hits a Single') >= 0
   ) {
-    analysis.hit.kind = 'single';
+    analysis.hitMeta.kind = 'single';
   } else if (
     updateText.indexOf('hits a Double') >= 0
   ) {
-    analysis.hit.kind = 'double';
+    analysis.hitMeta.kind = 'double';
   } else if (
     updateText.indexOf('hits a Triple') >= 0
   ) {
-    analysis.hit.kind = 'triple';
+    analysis.hitMeta.kind = 'triple';
   } else if (
     updateText.indexOf('home run') >= 0
   ) {
-    analysis.hit.kind = 'homeRun';
+    analysis.hitMeta.kind = 'homeRun';
 
     if (
       updateText.indexOf('ball lands in a Big Bucket') >= 0
     ) {
-      analysis.hit.bigBucket = true;
+      analysis.hitMeta.bigBucket = true;
     }
   }
 
-  if (analysis.hit.kind) {
-    analysis.hit.isHit = true;
+  if (analysis.hitMeta.kind) {
+    analysis.hit = true;
 
     // from s12 onward, scores on the play are in the scoreUpdate field
     const scoreUpdate = eventData.scoreUpdate;
     if (scoreUpdate) {
-      analysis.hit.rbi = parseInt(scoreUpdate.match(/^\d+/)[0]) || 0;
+      analysis.runsScored = parseInt(scoreUpdate.match(/^\d+/)[0]) || 0;
 
     } else { // s2 - s11: no scoreUpdate, have to deduce from the updateText
       checkHitRbiPreS12(analysis, updateText);

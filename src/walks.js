@@ -4,13 +4,13 @@ const check = (analysis, eventData) => {
   if (
     updateText.indexOf('draws a walk') >= 0
   ) {
-    analysis.walk.isWalk = true;
+    analysis.walk = true;
 
     // check if any runs were scored on the play
     if (
       updateText.indexOf('scores') >= 0
     ) {
-      analysis.walk.runsScored = 1;
+      analysis.runsScored = 1;
     }
     return true;
   }

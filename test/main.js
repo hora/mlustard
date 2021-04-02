@@ -3,13 +3,6 @@ const mlustard = require('../src/mlustard.js');
 
 const gameEvents = require('./data/gameEvents.js');
 
-const beforeFirstPitch = gameEvents.beforeFirstPitch;
-const outs = [
-  gameEvents.flyout,
-  gameEvents.groundOut,
-  gameEvents.strikeOut,
-];
-
 describe('mlustard', () => {
   describe('analyzeGameEvent()', () => {
 
@@ -39,207 +32,215 @@ describe('mlustard', () => {
     });
 
     it('should return an obj with a gameStatus prop, set to beforeFirstPitch, when it is before the first pitch', () => {
+      const beforeFirstPitch = gameEvents.beforeFirstPitch;
       const analysis = mlustard.analyzeGameEvent(beforeFirstPitch);
 
       assert.propertyVal(analysis, 'gameStatus', 'beforeFirstPitch');
     });
 
-    it('should return an obj with an out prop, set to an obj with an isOut prop set to true, when the play results in a flyout/ground out/strike out', () => {
+    it('should register an out on the play', () => {
+      const outs = [
+        gameEvents.flyout,
+        gameEvents.groundOut,
+        gameEvents.strikeOut,
+        gameEvents.sacrificeScore,
+        gameEvents.sacrificeAdvance,
+      ];
+
       for (const out of outs) {
         const analysis = mlustard.analyzeGameEvent(out);
 
-        assert.property(analysis, 'out');
-        assert.isObject(analysis.out);
-        assert.propertyVal(analysis.out, 'isOut', true);
+        assert.propertyVal(analysis, 'out', true);
+        assert.isObject(analysis.outMeta);
       }
     });
 
     it('should return an obj with a kind prop, set to the string strikeOut, when the play results in a strike out', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.strikeOut);
 
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'kind', 'strikeOut');
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'strike');
     });
 
-    it('should return an obj with a isLastOfHalfInning prop, set to true, when the play results in an out and the half inning comes to an end as a result', () => {
+    it('should register a ground out, and that the half inning ends', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.lastOut);
 
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'isLastOfHalfInning',true);
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'ground')
+      assert.propertyVal(analysis, 'gameStatus', 'halfInningEnd');
     });
 
-    it('should return an obj with a gameStatus prop set to secondHalfInningStart prop, when the update is to notify that the second half of an inning is starting', () => {
+    it('should register that the 2nd half of inning is starting', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.secondHalf);
 
       assert.propertyVal(analysis, 'gameStatus', 'secondHalfInningStart');
     });
 
-    it('should return an obj with a gameStatus prop set to firstHalfInningStart prop, when the update is to notify that the first half of an inning is starting', () => {
+    it('should register that the 1st half of inning is starting', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.firstHalf);
 
       assert.propertyVal(analysis, 'gameStatus', 'firstHalfInningStart');
     });
 
-    it('should return an obj with a hit prop', () => {
+    it('should register a hit on the play', () => {
+      const hits = [
+        gameEvents.hit,
+        gameEvents.single,
+        gameEvents.dbl,
+        gameEvents.homeRun,
+        gameEvents.bigBucket,
+      ];
+
       const analysis = mlustard.analyzeGameEvent(gameEvents.hit);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
     });
 
     it('should specify that a single was hit, and count the rbi', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.single);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'single');
-      assert.propertyVal(analysis.hit, 'rbi', 0);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'single');
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should specify that a double was hit, and count the rbi', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.dbl);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'double');
-      assert.propertyVal(analysis.hit, 'rbi', 1);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'double');
+      assert.propertyVal(analysis, 'runsScored', 1);
     });
 
     it('should specify that a triple was hit', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.triple);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'triple');
-      assert.propertyVal(analysis.hit, 'rbi', 0);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'triple');
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should specify that a home run was hit, counting all rbi', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.homeRun);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'homeRun');
-      assert.propertyVal(analysis.hit, 'rbi', 3);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'homeRun');
+      assert.propertyVal(analysis, 'runsScored', 3);
     });
 
     it('should specify that a solo home run was hit, counting all rbi pre s12', () => {
       const solo = mlustard.analyzeGameEvent(gameEvents.soloHR);
 
-      assert.property(solo, 'hit');
-      assert.isObject(solo.hit);
-      assert.propertyVal(solo.hit, 'kind', 'homeRun');
-      assert.propertyVal(solo.hit, 'rbi', 1);
+      assert.propertyVal(solo, 'hit', true);
+      assert.isObject(solo.hitMeta);
+      assert.propertyVal(solo.hitMeta, 'kind', 'homeRun');
+      assert.propertyVal(solo, 'runsScored', 1);
     });
 
     it('should specify that a 2-run home run was hit, counting all rbi pre s12', () => {
       const twoRun = mlustard.analyzeGameEvent(gameEvents.twoRunHR);
 
-      assert.property(twoRun, 'hit');
-      assert.isObject(twoRun.hit);
-      assert.propertyVal(twoRun.hit, 'kind', 'homeRun');
-      assert.propertyVal(twoRun.hit, 'rbi', 2);
+      assert.propertyVal(twoRun, 'hit', true);
+      assert.isObject(twoRun.hitMeta);
+      assert.propertyVal(twoRun.hitMeta, 'kind', 'homeRun');
+      assert.propertyVal(twoRun, 'runsScored', 2);
     });
 
     it('should specify that a home run landed in a big bucket, counting rbi', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.bigBucket);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'homeRun');
-      assert.propertyVal(analysis.hit, 'bigBucket', true);
-      assert.propertyVal(analysis.hit, 'rbi', 3);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'homeRun');
+      assert.propertyVal(analysis.hitMeta, 'bigBucket', true);
+      assert.propertyVal(analysis, 'runsScored', 3);
     });
 
     it('should not count score when a hit has no rbi from s12 onwards', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.hitButNoScore);
 
-      assert.property(analysis, 'hit');
-      assert.isObject(analysis.hit);
-      assert.propertyVal(analysis.hit, 'kind', 'single');
-      assert.propertyVal(analysis.hit, 'rbi', 0);
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'single');
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should register a successful steal', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'success', true);
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', true);
     });
 
     it('should register a steal, with runs scored if last base stolen', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'runsScored', 1);
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', true);
+      assert.propertyVal(analysis, 'runsScored', 1);
     });
 
     it('should register a steal of fourth base', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.stealScore);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'baseStolen', 3);
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 3);
     });
 
     it('should register a steal, with no runs scored if last base not stolen', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.stealSecond);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'baseStolen', 1);
-      assert.propertyVal(analysis.steal, 'runsScored', 0);
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 1);
+      assert.propertyVal(analysis.stealMeta, 'success', true);
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should register a steal of home, with a score of 1', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.stealHome);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'baseStolen', 3);
-      assert.propertyVal(analysis.steal, 'runsScored', 1);
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 3);
+      assert.propertyVal(analysis, 'runsScored', 1);
     });
 
     it('should register a player was caught stealing, with an out on the play', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.caughtStealing);
 
-      assert.property(analysis, 'steal');
-      assert.isObject(analysis.steal);
-      assert.propertyVal(analysis.steal, 'isSteal', true);
-      assert.propertyVal(analysis.steal, 'success', false);
-      assert.propertyVal(analysis.steal, 'baseStolen', 2);
-      assert.propertyVal(analysis.steal, 'runsScored', 0);
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'isOut', true);
-      assert.propertyVal(analysis.out, 'kind', 'caughtStealing');
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', false);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 2);
+      assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'caughtStealing');
     });
 
     it('should register a walk on the play, with no score if there was not one', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.walk);
 
-      assert.property(analysis, 'walk');
-      assert.isObject(analysis.walk);
-      assert.propertyVal(analysis.walk, 'isWalk', true);
-      assert.propertyVal(analysis.walk, 'runsScored', 0);
+      assert.propertyVal(analysis, 'walk', true);
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should register a walk on the play, with the score calculated if runners made home', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.walkScores);
 
-      assert.property(analysis, 'walk');
-      assert.isObject(analysis.walk);
-      assert.propertyVal(analysis.walk, 'isWalk', true);
-      assert.propertyVal(analysis.walk, 'runsScored', 1);
+      assert.propertyVal(analysis, 'walk', true);
+      assert.propertyVal(analysis, 'runsScored', 1);
     });
 
     // todo: add a test to make sure no errors are thrown on any past game
@@ -250,30 +251,31 @@ describe('mlustard', () => {
     it('should register a sacrifice as an out', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeScore);
 
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'isOut', true);
-      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'unspecified');
+      assert.propertyVal(analysis.outMeta, 'sacrifice', true);
+      assert.isObject(analysis.outMeta.sacrificeMeta);
     });
 
     it('should register a sacrifice as an out, counting a run scored', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeScore);
 
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'isOut', true);
-      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
-      assert.propertyVal(analysis.out, 'runsScored', 1);
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'unspecified');
+      assert.propertyVal(analysis.outMeta, 'sacrifice', true);
+      assert.isObject(analysis.outMeta.sacrificeMeta);
+      //assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'score');
+      assert.propertyVal(analysis, 'runsScored', 1);
     });
 
     it('should register a sacrifice as an out, with no run scored', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeAdvance);
 
-      assert.property(analysis, 'out');
-      assert.isObject(analysis.out);
-      assert.propertyVal(analysis.out, 'isOut', true);
-      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
-      assert.propertyVal(analysis.out, 'runsScored', 0);
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'ground');
+      assert.propertyVal(analysis.outMeta, 'sacrifice', true);
+      //assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'advance');
+      assert.propertyVal(analysis, 'runsScored', 0);
     });
 
     it('should register game end status', () => {

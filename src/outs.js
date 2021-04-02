@@ -1,31 +1,27 @@
-const doSacrificeCheck = (analysis, eventData) => {
-  const updateText = eventData.lastUpdate || '';
-
-};
-
 const check = (analysis, eventData) => {
   const updateText = eventData.lastUpdate || '';
 
   if (
     updateText.indexOf('flyout') >= 0
   ) {
-    analysis.out.kind = 'flyout';
+    analysis.outMeta.kind = 'fly';
   } else if (
     updateText.indexOf('ground out') >= 0
   ) {
-    analysis.out.kind = 'groundOut';
+    analysis.outMeta.kind = 'ground';
   } else if (
     updateText.indexOf('strikes out') >= 0
   ) {
-    analysis.out.kind = 'strikeOut';
+    analysis.outMeta.kind = 'strike';
   }
 
   if (
     updateText.indexOf('sacrifice') >= 0
   ) {
-    // todo: this isn't really an out kind (which would still be fly/ground),
-    // but an extrabit of info. fix this.
-    analysis.out.kind = 'sacrifice';
+    // this may already be a ground/flyout, or its unspecified
+    analysis.outMeta.kind = analysis.outMeta.kind || 'unspecified';
+    
+    analysis.outMeta.sacrifice = true;
 
     // todo: also log how many advances were on the play
 
@@ -33,15 +29,15 @@ const check = (analysis, eventData) => {
     if (
       updateText.indexOf('scores') >= 0
     ) {
-      analysis.out.runsScored = 1;
+      analysis.runsScored = 1;
     }
   }
 
-  if (analysis.out.kind) {
-    analysis.out.isOut = true;
+  if (analysis.outMeta.kind) {
+    analysis.out = true;
 
     if (eventData.halfInningOuts === 0) {
-      analysis.out.isLastOfHalfInning = true;
+      analysis.gameStatus = 'halfInningEnd';
     }
 
     return true;
