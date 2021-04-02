@@ -1,5 +1,7 @@
+const util = require('./util');
+
 const check = (analysis, eventData) => {
-  const updateText = eventData.lastUpdate || '';
+  const updateText = util.getUpdateText(eventData);
 
   if (
     updateText.indexOf('Play ball') >= 0

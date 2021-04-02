@@ -1,3 +1,5 @@
+const util = require('./util');
+
 const checkHitRbiPreS12 = (analysis, updateText) => {
   // if a single/double/triple was hit & x runs were scored, it shows up
   // at the end of the updateText as "...! x scores"
@@ -27,7 +29,7 @@ const checkHitRbiPreS12 = (analysis, updateText) => {
 };
 
 const check = (analysis, eventData) => {
-  const updateText = eventData.lastUpdate || '';
+  const updateText = util.getUpdateText(eventData);
 
   if (
     updateText.indexOf('hits a Single') >= 0

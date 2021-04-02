@@ -1,5 +1,7 @@
+const util = require('./util');
+
 const check = (analysis, eventData) => {
-  const updateText = eventData.lastUpdate || '';
+  const updateText = util.getUpdateText(eventData);
 
   if (
     updateText.indexOf('flyout') >= 0
@@ -20,7 +22,7 @@ const check = (analysis, eventData) => {
   ) {
     // this may already be a ground/flyout, or its unspecified
     analysis.outMeta.kind = analysis.outMeta.kind || 'unspecified';
-    
+
     analysis.outMeta.sacrifice = true;
 
     // todo: also log how many advances were on the play
