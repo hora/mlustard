@@ -94,6 +94,11 @@ const doGameStatusCheck = (eventData) => {
     analysis.gameStatus = 'gameEnd';
   }
 
+  if (analysis.gameStatus) {
+    return analysis;
+  }
+
+  return false;
 };
 
 const doOutsCheck = (eventData) => {
@@ -318,7 +323,10 @@ const analyzeGameEvent = (eventData) => {
 
   initAnalysis(eventData);
 
-  doGameStatusCheck(eventData);
+  if(doGameStatusCheck(eventData)) {
+    return analysis;
+  }
+
   doOutsCheck(eventData);
   doHitsCheck(eventData);
 
