@@ -1,3 +1,6 @@
+const noData = {
+};
+
 const beforeFirstPitch = {
   "id": "628a2ddb-f608-411b-8d2e-2768cd36d58b",
   "day": 111,
@@ -1598,6 +1601,7 @@ const endNew = {
 };
 
 module.exports = {
+  noData,
   beforeFirstPitch,
   flyout,
   groundOut,

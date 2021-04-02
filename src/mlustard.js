@@ -8,7 +8,7 @@ const walks = require('./walks');
  * sets all known (aka implemented) analysis results to their defauls
  * return an object with the props:
  *
- * id: string
+ * id: string || undefined
  *   - the game event ID
  *
  * runsScored: number
