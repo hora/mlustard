@@ -6,7 +6,7 @@ const initAnalysis = (eventData) => {
    */
   analysis = {
     // the game event ID
-    id: eventData.id,
+    id: eventData.id || eventData._id,
 
     // --- Game Status
     // ---------------
@@ -22,10 +22,13 @@ const initAnalysis = (eventData) => {
     out: {
     // true when there is an out on the play
       isOut: false,
-      // one of: 'flyout', 'groundOut', 'strikeOut', 'caughtStealing'
+      // one of: 'flyout', 'groundOut', 'strikeOut', 'caughtStealing',
+      // 'sacrifice'
       kind: null,
       // true when the out closes out a half inning
-      isLastOfHalfInning: null
+      isLastOfHalfInning: null,
+      // how many runs were scored on the play
+      runsScored: 0,
     },
 
     // --- Hits
@@ -83,6 +86,12 @@ const doGameStatusCheck = (eventData) => {
     updateText.indexOf('Bottom of') >= 0
   ) {
     analysis.gameStatus = 'secondHalfInningStart';
+  } else if (
+    updateText.indexOf('Game over') >= 0 ||
+    updateText.indexOf(`${eventData.homeTeamNickname} ${eventData.homeScore}, ${eventData.awayTeamNickname} ${eventData.awayScore}`) >= 0 ||
+    updateText.indexOf(`${eventData.awayTeamNickname} ${eventData.awayScore}, ${eventData.homeTeamNickname} ${eventData.homeScore}`) >= 0
+  ) {
+    analysis.gameStatus = 'gameEnd';
   }
 
 };
@@ -281,6 +290,29 @@ const doWalksCheck = (eventData) => {
   return false;
 };
 
+const doSacrificeCheck = (eventData) => {
+  const updateText = eventData.lastUpdate || '';
+
+  if (
+    updateText.indexOf('sacrifice') >= 0
+  ) {
+    analysis.out.isOut = true;
+    analysis.out.kind = 'sacrifice';
+
+    // todo: also log how many advances were on the play
+
+    // check if any runs were scored on the play
+    if (
+      updateText.indexOf('scores') >= 0
+    ) {
+      analysis.out.runsScored = 1;
+    }
+    return true;
+  }
+
+  return false;
+};
+
 const analyzeGameEvent = (eventData) => {
   if (!eventData) { return null }
 
@@ -295,6 +327,10 @@ const analyzeGameEvent = (eventData) => {
   }
 
   if (doWalksCheck(eventData)) {
+    return analysis;
+  }
+
+  if (doSacrificeCheck(eventData)) {
     return analysis;
   }
 

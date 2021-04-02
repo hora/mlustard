@@ -28,7 +28,13 @@ describe('mlustard', () => {
         const gameEvent = gameEvents[gameId];
         const analysis = mlustard.analyzeGameEvent(gameEvent);
 
-        assert.propertyVal(analysis, 'id', gameEvent.id);
+        if (gameEvent.id) {
+          assert.propertyVal(analysis, 'id', gameEvent.id);
+        } else if (gameEvent._id) {
+          assert.propertyVal(analysis, 'id', gameEvent._id);
+        } else {
+          assert(true, false);
+        }
       }
     });
 
@@ -240,7 +246,43 @@ describe('mlustard', () => {
     // events, starting from the latest season backwards (since new stuff is
     // more likely to break it)
     //
-    // todo: check for sacrifice outs with scores
+
+    it('should register a sacrifice as an out', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeScore);
+
+      assert.property(analysis, 'out');
+      assert.isObject(analysis.out);
+      assert.propertyVal(analysis.out, 'isOut', true);
+      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
+    });
+
+    it('should register a sacrifice as an out, counting a run scored', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeScore);
+
+      assert.property(analysis, 'out');
+      assert.isObject(analysis.out);
+      assert.propertyVal(analysis.out, 'isOut', true);
+      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
+      assert.propertyVal(analysis.out, 'runsScored', 1);
+    });
+
+    it('should register a sacrifice as an out, with no run scored', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeAdvance);
+
+      assert.property(analysis, 'out');
+      assert.isObject(analysis.out);
+      assert.propertyVal(analysis.out, 'isOut', true);
+      assert.propertyVal(analysis.out, 'kind', 'sacrifice');
+      assert.propertyVal(analysis.out, 'runsScored', 0);
+    });
+
+    it('should register game end status', () => {
+      const endOld = mlustard.analyzeGameEvent(gameEvents.endOld);
+      const endNew = mlustard.analyzeGameEvent(gameEvents.endNew);
+
+      assert.propertyVal(endOld, 'gameStatus', 'gameEnd');
+      assert.propertyVal(endNew, 'gameStatus', 'gameEnd');
+    });
 
   });
 });
