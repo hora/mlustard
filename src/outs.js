@@ -25,8 +25,6 @@ const check = (analysis, eventData) => {
 
     analysis.outMeta.sacrifice = true;
 
-    // todo: also log how many advances were on the play
-
     // check if any runs were scored on the play
     if (
       update.indexOf('scores') >= 0

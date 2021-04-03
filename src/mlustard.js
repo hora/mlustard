@@ -78,14 +78,13 @@ const misc = require('./misc');
  *     - birdsPecked
  *     - justBirds
  *     - allergicReaction
-*      - incinerated
-*      - becameMagmatic
-*      - feedback
-*      - electricity
-*      - unstable
-*      - flickering
-*      - consumersAttack
- *     - todo: add all special events
+ *     - incinerated
+ *     - becameMagmatic
+ *     - feedback
+ *     - electricity
+ *     - unstable
+ *     - flickering
+ *     - consumersAttack
  *
  * maximumBlaseball: boolean
  *   - true when we're at MAXIMUM BLASEBALL
