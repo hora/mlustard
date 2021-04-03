@@ -1,6 +1,13 @@
 const util = require('./util');
 
 const checkHitRbiPreS12 = (analysis, update) => {
+  // from some non-exhaustive research, i think there weren't any grand slams
+  // pre-s12 that were not 4 runs
+  if (analysis.hitMeta.kind === 'grandSlam') {
+    analysis.runsScored = 4;
+    return;
+  }
+
   // if a single/double/triple was hit & x runs were scored, it shows up
   // at the end of the update as "...! x scores"
   let match = update.match(/! (\d+) scores/);
@@ -47,16 +54,21 @@ const check = (analysis, eventData) => {
     update.indexOf('home run') >= 0
   ) {
     analysis.hitMeta.kind = 'homeRun';
+  } else if (
+    update.indexOf('grand slam') >= 0
+  ) {
+    analysis.hitMeta.kind = 'grandSlam';
+  }
 
+  if (analysis.hitMeta.kind) {
+    analysis.hit = true;
+
+    // check if home run / grand slam landed in big bucket
     if (
       update.indexOf('ball lands in a big bucket') >= 0
     ) {
       analysis.hitMeta.bigBucket = true;
     }
-  }
-
-  if (analysis.hitMeta.kind) {
-    analysis.hit = true;
 
     // from s12 onward, scores on the play are in the scoreUpdate field
     const scoreUpdate = eventData?.scoreUpdate || '';

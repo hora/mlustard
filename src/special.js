@@ -98,7 +98,4 @@ const check = (analysis, eventData) => {
 module.exports = {
   check,
 };
-  //} else if (
-      //update.indexOf('hits a grand slam') >= 0
-    //) {
-      //this.game.maximumBlaseball
+

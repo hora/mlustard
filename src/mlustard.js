@@ -4,6 +4,7 @@ const hits = require('./hits');
 const steals = require('./steals');
 const walks = require('./walks');
 const special = require('./special');
+const misc = require('./misc');
 
 /*
  * sets all known (aka implemented) analysis results to their defauls
@@ -50,6 +51,7 @@ const special = require('./special');
  *     - double
  *     - triple
  *     - homeRun
+ *     - grandSlam
  *   - bigBucket: boolean
  *     - whether a Big Bucket was activated on the play
  *
@@ -84,6 +86,9 @@ const special = require('./special');
 *      - flickering
 *      - consumersAttack
  *     - todo: add all special events
+ *
+ * maximumBlaseball: boolean
+ *   - true when we're at MAXIMUM BLASEBALL
  */
 const initAnalysis = (eventData) => {
   return {
@@ -120,6 +125,8 @@ const initAnalysis = (eventData) => {
       kind: null,
     },
 
+    maximumBlaseball: false,
+
   };
 };
 
@@ -135,6 +142,7 @@ const analyzeGameEvent = (eventData) => {
     walks,
     steals,
     special,
+    misc,
   ];
 
   for (const checker of checkers) {

@@ -16,6 +16,40 @@ describe('mlustard', () => {
       }
     });
 
+    it('should return all default analysis values if no event data', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.noData);
+
+      assert.propertyVal(analysis, 'id', undefined);
+      assert.propertyVal(analysis, 'gameStatus', null);
+      assert.propertyVal(analysis, 'runsScored', 0);
+      // outs
+      assert.propertyVal(analysis, 'out', false);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', null);
+      assert.propertyVal(analysis.outMeta, 'sacrifice', false);
+      assert.isObject(analysis.outMeta.sacrificeMeta);
+      assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', null);
+      // hits
+      assert.propertyVal(analysis, 'hit', false);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', null);
+      assert.propertyVal(analysis.hitMeta, 'bigBucket', false);
+      // steals
+      assert.propertyVal(analysis, 'steal', false);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', null);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', null);
+      // walk
+      assert.propertyVal(analysis, 'walk', false);
+      // special
+      assert.propertyVal(analysis, 'special', false);
+      assert.isObject(analysis.specialMeta);
+      assert.propertyVal(analysis.specialMeta, 'kind', null);
+      // maximum blaseball
+      assert.propertyVal(analysis, 'maximumBlaseball', false);
+
+    });
+
     it('should have an id prop, matching the game event id', () => {
       for (const gameId in gameEvents) {
         const gameEvent = gameEvents[gameId];
@@ -382,6 +416,30 @@ describe('mlustard', () => {
 
       assert.propertyVal(analysis, 'special', true);
       assert.propertyVal(analysis.specialMeta, 'kind', 'consumersAttack');
+    });
+
+    it('should register a grand slam', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.grandSlam);
+
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'grandSlam');
+      assert.propertyVal(analysis, 'runsScored', 4);
+    });
+
+    it('should register a grand slam pre s-12', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.grandSlamPre12);
+
+      assert.propertyVal(analysis, 'hit', true);
+      assert.isObject(analysis.hitMeta);
+      assert.propertyVal(analysis.hitMeta, 'kind', 'grandSlam');
+      assert.propertyVal(analysis, 'runsScored', 4);
+    });
+
+    it('should register MAXIMUM BLASEBALL', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.maximumBlaseball);
+
+      assert.propertyVal(analysis, 'maximumBlaseball', true);
     });
 
   });
