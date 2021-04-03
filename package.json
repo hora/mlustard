@@ -11,7 +11,7 @@
   ],
   "author": "Horațiu Halmaghi",
   "license": "CC BY-NC",
-  "dependencies": {
+  "devDependencies": {
     "chai": "^4.3.4",
     "mocha": "^8.3.2"
   }
