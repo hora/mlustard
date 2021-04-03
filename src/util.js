@@ -1,5 +1,5 @@
 const getUpdateText = (eventData) => {
-  return eventData.lastUpdate || '';
+  return eventData?.lastUpdate?.toLowerCase() || '';
 };
 
 module.exports = {

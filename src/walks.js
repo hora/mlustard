@@ -1,16 +1,16 @@
 const util = require('./util');
 
 const check = (analysis, eventData) => {
-  const updateText = util.getUpdateText(eventData);
+  const update = util.getUpdateText(eventData);
 
   if (
-    updateText.indexOf('draws a walk') >= 0
+    update.indexOf('draws a walk') >= 0
   ) {
     analysis.walk = true;
 
     // check if any runs were scored on the play
     if (
-      updateText.indexOf('scores') >= 0
+      update.indexOf('scores') >= 0
     ) {
       analysis.runsScored = 1;
     }

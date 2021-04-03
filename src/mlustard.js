@@ -3,6 +3,7 @@ const outs = require('./outs');
 const hits = require('./hits');
 const steals = require('./steals');
 const walks = require('./walks');
+const special = require('./special');
 
 /*
  * sets all known (aka implemented) analysis results to their defauls
@@ -62,6 +63,27 @@ const walks = require('./walks');
  *
  * walk: boolean
  *   - true when there is a walk on the play
+ *
+ * special: boolean
+ *   - true when there was a special event on the play
+ * specialMeta: object, with the props:
+ *   - kind: null || string
+ *     - will be one of:
+ *     - bloodrain
+ *     - isPartying
+ *     - reverb
+ *     - birdsCircle
+ *     - birdsPecked
+ *     - justBirds
+ *     - allergicReaction
+*      - incinerated
+*      - becameMagmatic
+*      - feedback
+*      - electricity
+*      - unstable
+*      - flickering
+*      - consumersAttack
+ *     - todo: add all special events
  */
 const initAnalysis = (eventData) => {
   return {
@@ -93,6 +115,11 @@ const initAnalysis = (eventData) => {
 
     walk: false,
 
+    special: false,
+    specialMeta: {
+      kind: null,
+    },
+
   };
 };
 
@@ -107,6 +134,7 @@ const analyzeGameEvent = (eventData) => {
     hits,
     walks,
     steals,
+    special,
   ];
 
   for (const checker of checkers) {

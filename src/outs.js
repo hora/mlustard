@@ -1,24 +1,24 @@
 const util = require('./util');
 
 const check = (analysis, eventData) => {
-  const updateText = util.getUpdateText(eventData);
+  const update = util.getUpdateText(eventData);
 
   if (
-    updateText.indexOf('flyout') >= 0
+    update.indexOf('flyout') >= 0
   ) {
     analysis.outMeta.kind = 'fly';
   } else if (
-    updateText.indexOf('ground out') >= 0
+    update.indexOf('ground out') >= 0
   ) {
     analysis.outMeta.kind = 'ground';
   } else if (
-    updateText.indexOf('strikes out') >= 0
+    update.indexOf('strikes out') >= 0
   ) {
     analysis.outMeta.kind = 'strike';
   }
 
   if (
-    updateText.indexOf('sacrifice') >= 0
+    update.indexOf('sacrifice') >= 0
   ) {
     // this may already be a ground/flyout, or its unspecified
     analysis.outMeta.kind = analysis.outMeta.kind || 'unspecified';
@@ -29,7 +29,7 @@ const check = (analysis, eventData) => {
 
     // check if any runs were scored on the play
     if (
-      updateText.indexOf('scores') >= 0
+      update.indexOf('scores') >= 0
     ) {
       analysis.runsScored = 1;
     }
@@ -38,7 +38,7 @@ const check = (analysis, eventData) => {
   if (analysis.outMeta.kind) {
     analysis.out = true;
 
-    if (eventData.halfInningOuts === 0) {
+    if (eventData?.halfInningOuts === 0) {
       analysis.gameStatus = 'halfInningEnd';
     }
 
