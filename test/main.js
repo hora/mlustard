@@ -277,11 +277,6 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'runsScored', 1);
     });
 
-    // todo: add a test to make sure no errors are thrown on any past game
-    // events, starting from the latest season backwards (since new stuff is
-    // more likely to break it)
-    //
-
     it('should register a sacrifice as an out', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeScore);
 
