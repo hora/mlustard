@@ -25,11 +25,16 @@ const check = (analysis, eventData) => {
 
     analysis.outMeta.sacrifice = true;
 
-    // check if any runs were scored on the play
+    // check if someone scored or advanced on the sacrifice
     if (
       update.indexOf('scores') >= 0
     ) {
+      analysis.outMeta.sacrificeMeta.kind = 'score';
       analysis.runsScored = 1;
+    } else if (
+      update.indexOf('advance') >= 0
+    ) {
+      analysis.outMeta.sacrificeMeta.kind = 'advance';
     }
   }
 

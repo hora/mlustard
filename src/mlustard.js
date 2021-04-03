@@ -33,11 +33,11 @@ const misc = require('./misc');
  *     - ground
  *     - strike
  *     - caughtStealing
- *     - unspecified (in the case of a sacrifice out)
+ *     - unspecified (as you sometimes see with sacrifice outs)
  *   - sacrifice: boolean
  *     - true when the out was a sacrifice
  *   - sacrificeMeta: object, with the following props:
- *     - kind: string - todo: NOT YET IMPLEMENTED
+ *     - kind: string || null
  *       - will be one of:
  *       - advance
  *       - score
