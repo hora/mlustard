@@ -293,7 +293,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.outMeta, 'kind', 'unspecified');
       assert.propertyVal(analysis.outMeta, 'sacrifice', true);
       assert.isObject(analysis.outMeta.sacrificeMeta);
-      //assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'score');
+      assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'score');
       assert.propertyVal(analysis, 'runsScored', 1);
     });
 
@@ -303,7 +303,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'out', true);
       assert.propertyVal(analysis.outMeta, 'kind', 'ground');
       assert.propertyVal(analysis.outMeta, 'sacrifice', true);
-      //assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'advance');
+      assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'advance');
       assert.propertyVal(analysis, 'runsScored', 0);
     });
 
