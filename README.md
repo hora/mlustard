@@ -1,10 +1,10 @@
 # mlustard
 
-> Get out the rye bread and *mlustard*, Grandma, it is grand slalami time!
+_"Get out the rye bread and **mlustard**, Grandma, it is grand slalami time!"_
 
-Not Dave Niehaus
+Notdave Niehaus
 
-*mlustard* takes regular old ~~rye bread~~
+**mlustard** takes regular old ~~rye bread~~
 [Blaseball](https://www.blaseball.com/) game event data, and
 analyzes it for 'interestingness'.
 For instance, it can tell you whether regular old \[redacted\] stuff happened,
