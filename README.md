@@ -162,15 +162,22 @@ event
 - `maximumBlaseball`: boolean
   - true when we're at MAXIMUM BLASEBALL
 
+## Contributors
+
+- [hora](https://github.com/hora)
+- [RangerRick](https://github.com/RangerRick)
+
 ## Acknowledgments
 
 You need a lot of things to make a node module, but at the very least, thanks go
 to:
 
 - [The Game Band](https://thegameband.com/), because we are all love blaseball.
-- [The Society for Internet Blaseball Research](https://sibr.dev/) for providing
+- [The Society for Internet Blaseball Research](https://sibr.dev/), for providing
   many of the ingredients that go into mlustard, including help with the APIs
   and overall Blaseball Knowledge.
+- [RangerRick](https://github.com/RangerRick), for writing the code that
+  identifies MAXIMUM BLASEBALL and the special events, and for sharing it.
 
 ## Some last words
 
