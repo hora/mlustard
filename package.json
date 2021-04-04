@@ -2,6 +2,12 @@
   "name": "mlustard",
   "version": "1.0.0",
   "description": "A utility for determining what's interesting about a Blaseball game event",
+  "author": "Horațiu Halmaghi",
+  "contributors": [
+    {
+      "name": "Benjamin Reed"
+    }
+  ],
   "main": "src/main.js",
   "scripts": {
     "test": "mocha"
@@ -9,7 +15,6 @@
   "keywords": [
     "blaseball"
   ],
-  "author": "Horațiu Halmaghi",
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.3.4",
