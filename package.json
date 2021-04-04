@@ -8,7 +8,7 @@
       "name": "Benjamin Reed"
     }
   ],
-  "main": "src/main.js",
+  "main": "src/mlustard.js",
   "scripts": {
     "test": "mocha"
   },
