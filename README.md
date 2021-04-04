@@ -9,8 +9,8 @@ Not Dave Niehaus
 analyzes it for 'interestingness'.
 For instance, it can tell you whether regular old \[redacted\] stuff happened,
 like hits, outs, or stolen bases.
-But it can also tell you whether tastier stuff happened, like blooddrain,
-allergic reactions, or consumer attacks.
+But it can also tell you whether there's some tastier stuff on the play, like
+blooddrain, allergic reactions, or consumer attacks.
 (See [the metadata collected by mlustard](#the-metadata-collected-by-mlustard)
 (below) for all currently-implemented event checks).
 
@@ -35,16 +35,16 @@ const analysis = mlustard.analyzeGameEvent(gameEvent);
 
 - `gameEvent` must be a valid game event object from [the official Blaseball API
 event
-  stream](https://github.com/Society-for-Internet-Blaseball-Research/blaseball-api-spec/blob/master/streamData.md) (the goods are in `data.value.schedule`),
+  stream](https://github.com/Society-for-Internet-Blaseball-Research/blaseball-api-spec/blob/master/streamData.md) (the goods are in `data.value.games.schedule`),
   or from
-  [Chronicler](https://astrid.stoplight.io/docs/sibr/reference/Chronicler.v1.yaml)
+  [Chronicler](https://astrid.stoplight.io/docs/sibr/reference/Chronicler.v1.yaml).
 
-- `analysis` will be an object like the following (which registers a sacrifice
-  flyout, with a run scored on the play):
+- `analysis` will be an object like in the following example (which registers a
+  sacrifice flyout, with a run scored on the play):
 
 ```js
 {
-  id: <the game event id>
+  id: <the game event id>,
 
   gameStatus: null,
   runsScored: 1,
@@ -90,7 +90,7 @@ event
   - how many runs were scored on the play
 
 - `gameStatus`: null || string
-  - will be null or one of:
+  - will be `null` or one of:
   - `'beforeFirstPitch'`, when the first pitch hasn't been thrown yet
   - `'firstHalfInningStart'`, when the first half of an inning is starting
   - `'secondHalfInningStart'`, when the second half of an inning is starting
@@ -111,7 +111,7 @@ event
     - true when the out was a sacrifice
   - `sacrificeMeta`: object, with the following props:
     - `kind`: string || null
-   - will be one of:
+    - will be one of:
     - `'advance'`
     - `'score'`
 
@@ -143,8 +143,8 @@ event
   - true when there was a special event on the play
 - `specialMeta`: object, with the props:
   - `kind`: null || string
-    - `'will be one of:
-    - `'bloodrain'`
+    - will be one of:
+    - `'blooddrain'`
     - `'isPartying'`
     - `'reverb'`
     - `'birdsCircle'`
