@@ -437,5 +437,12 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'maximumBlaseball', true);
     });
 
+    it('should register a salmon event', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.salmon);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
+    });
+
   });
 });
