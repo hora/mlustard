@@ -20,8 +20,6 @@ blooddrain, allergic reactions, or consumer attacks.
 npm install mlustard
 ```
 
-- Node 14.0.0 or later required
-
 ```js
 const mlustard = require('mlustard');
 
