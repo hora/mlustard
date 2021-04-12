@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const mlustard = require('../src/mlustard.js');
+const mlustard = require('../build/mlustard.js');
 
 const gameEvents = require('./data/gameEvents.js');
 
