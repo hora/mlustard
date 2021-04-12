@@ -64,9 +64,19 @@ const check = (analysis, eventData) => {
   } else if (
     update.indexOf('consumers attack') >= 0
   ) {
-    analysis.specialMeta.kind = 'consumersAttack';
-    // why was owen picklestein attacked in a birds circle event outcome, s14 d
-    // 101, flowers vs lift
+
+    if (
+      update.indexOf('defends') >= 0
+    ) {
+      analysis.specialMeta.kind = 'consumersAttackDefended';
+    } else {
+      analysis.specialMeta.kind = 'consumersAttack';
+    }
+  } else if (
+    update.indexOf('salmon swim upstream') >= 0
+  ) {
+    analysis.specialMeta.kind = 'salmon';
+    // todo: keep an eye on what this can do to runs, innings
   }
 
   if (analysis.specialMeta.kind) {

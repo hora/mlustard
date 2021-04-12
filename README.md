@@ -156,6 +156,8 @@ event
     - `'unstable'`
     - `'flickering'`
     - `'consumersAttack'`
+    - `'consumersAttackDefended'`
+    - `'salmon'`
 
 - `maximumBlaseball`: boolean
   - true when we're at MAXIMUM BLASEBALL

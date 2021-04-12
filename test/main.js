@@ -437,5 +437,19 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'maximumBlaseball', true);
     });
 
+    it('should register a salmon event', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.salmon);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
+    });
+
+    it('should register a defended consumer attack', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.consumersDefend);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'consumersAttackDefended');
+    });
+
   });
 });
