@@ -2984,6 +2984,106 @@ const salmon = {
   "homeTeamSecondaryColor": "#5cffec"
 };
 
+const consumersDefend = {
+  "id": "0e07ec78-9ee2-4fd1-842c-d0b9a8cd948f",
+  "day": 0,
+  "phase": 6,
+  "rules": "4ae9d46a-5408-460a-84fb-cbd8d03fff6c",
+  "shame": false,
+  "inning": 1,
+  "season": 15,
+  "weather": 11,
+  "awayOdds": 0.4855122940914459,
+  "awayOuts": 3,
+  "awayTeam": "105bc3ff-1320-4e37-8ef0-8d595cb95dd0",
+  "homeOdds": 0.514487705908554,
+  "homeOuts": 3,
+  "homeTeam": "8d87c468-699a-47a8-b40d-cfb73a5660ad",
+  "outcomes": [
+      "CONSUMERS ATTACK\nTOT CLARK DEFENDS\n\nBAT BREAKS",
+      "CONSUMERS ATTACK\nPENELOPE MATHEWS DEFENDS\n\nBAT BREAKS"
+  ],
+  "awayBalls": 4,
+  "awayBases": 4,
+  "awayScore": 1,
+  "finalized": false,
+  "gameStart": true,
+  "homeBalls": 4,
+  "homeBases": 4,
+  "homeScore": 1,
+  "playCount": 63,
+  "stadiumId": "cfb57d7c-4118-4b0a-85cc-4e3a51a66cb6",
+  "statsheet": "4de2bfc7-5b97-407b-9ec5-9e9c884dda4a",
+  "atBatBalls": 0,
+  "awayBatter": "1c73f91e-0562-480d-9543-2aab1d5e5acd",
+  "homeBatter": null,
+  "lastUpdate": "CONSUMERS ATTACK\nPENELOPE MATHEWS DEFENDS\n\nBAT BREAKS",
+  "tournament": -1,
+  "awayPitcher": "1732e623-ffc2-40f0-87ba-fdcf97131f1f",
+  "awayStrikes": 3,
+  "baseRunners": [
+      "8b53ce82-4b1a-48f0-999d-1774b3719202",
+      "f3ddfd87-73a2-4681-96fe-829476c97886",
+      "c18961e9-ef3f-4954-bd6b-9fe01c615186"
+  ],
+  "homePitcher": "7dcf6902-632f-48c5-936a-7cf88802b93a",
+  "homeStrikes": 3,
+  "repeatCount": 0,
+  "scoreLedger": "",
+  "scoreUpdate": "",
+  "seriesIndex": 1,
+  "terminology": "b67e9bbb-1495-4e1b-b517-f1444b0a6c8b",
+  "topOfInning": true,
+  "atBatStrikes": 2,
+  "awayTeamName": "Seattle Garages",
+  "gameComplete": false,
+  "homeTeamName": "Baltimore Crabs",
+  "isPostseason": false,
+  "isTitleMatch": false,
+  "seriesLength": 3,
+  "awayBatterMod": "",
+  "awayTeamColor": "#2b4075",
+  "awayTeamEmoji": "0x1F3B8",
+  "basesOccupied": [
+      2,
+      1,
+      0
+  ],
+  "homeBatterMod": "",
+  "homeTeamColor": "#593037",
+  "homeTeamEmoji": "0x1F980",
+  "awayBatterName": "Sparks Beans",
+  "awayPitcherMod": "",
+  "baseRunnerMods": [
+      "",
+      "",
+      ""
+  ],
+  "gameStartPhase": 17,
+  "halfInningOuts": 0,
+  "homeBatterName": "",
+  "homePitcherMod": "",
+  "newInningPhase": -1,
+  "topInningScore": 1,
+  "awayPitcherName": "Betsy Trombone",
+  "baseRunnerNames": [
+      "Oliver Mueller",
+      "Theodore Duende",
+      "Carmelo Plums"
+  ],
+  "baserunnerCount": 3,
+  "halfInningScore": 1,
+  "homePitcherName": "Parker Parra",
+  "awayTeamNickname": "Garages",
+  "homeTeamNickname": "Crabs",
+  "secretBaserunner": null,
+  "bottomInningScore": 0,
+  "awayTeamBatterCount": 8,
+  "homeTeamBatterCount": 3,
+  "awayTeamSecondaryColor": "#5a83ea",
+  "homeTeamSecondaryColor": "#b05c6b"
+};
+
 module.exports = {
   noData,
   beforeFirstPitch,
@@ -3032,5 +3132,6 @@ module.exports = {
   grandSlamPre12,
   maximumBlaseball,
   salmon,
+  consumersDefend,
 };
 

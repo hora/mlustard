@@ -444,5 +444,12 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
     });
 
+    it('should register a defended consumer attack', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.consumersDefend);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'consumersAttackDefended');
+    });
+
   });
 });
