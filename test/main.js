@@ -451,5 +451,17 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.specialMeta, 'kind', 'consumersAttackDefended');
     });
 
+    it('should register a batter showing up to bat', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.batter);
+
+      assert.propertyVal(analysis, 'batterUp', true);
+    });
+
+    it('should not register a batter showing up to bat if they have been batting for some time', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.batterAlready);
+
+      assert.propertyVal(analysis, 'batterUp', false);
+    });
+
   });
 });

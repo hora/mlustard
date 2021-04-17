@@ -2,8 +2,7 @@
 
 var util = require('./util');
 
-var check = function check(analysis, eventData) {
-  // check for maximum blaseball
+var checkMaximumBlaseball = function checkMaximumBlaseball(analysis, eventData) {
   var balls, bases, outs, strikes;
 
   if (eventData.topOfInning) {
@@ -22,6 +21,15 @@ var check = function check(analysis, eventData) {
 
   if (eventData.halfInningOuts === outs - 1 && eventData.atBatBalls === balls - 1 && eventData.atBatStrikes === strikes - 1 && eventData.baserunnerCount === bases - 1) {
     analysis.maximumBlaseball = true;
+  }
+};
+
+var check = function check(analysis, eventData) {
+  var update = util.getUpdateText(eventData);
+  checkMaximumBlaseball(analysis, eventData); // check for whether a batter just showed up to bat
+
+  if (update.indexOf('batting for') >= 0) {
+    analysis.batterUp = true;
   }
 };
 

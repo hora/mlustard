@@ -23,6 +23,9 @@ var misc = require('./misc');
  * runsScored: number
  *   - how many runs were scored on the play
  *
+ * batterUp: boolean
+ *   - whether a batter just showed up to bat
+ *
  * gameStatus: null || string
  *   - will be null or one of:
  *   - beforeFirstPitch, when the first pitch hasn't been thrown yet
@@ -103,6 +106,7 @@ var initAnalysis = function initAnalysis(eventData) {
     id: eventData.id || eventData._id,
     gameStatus: null,
     runsScored: 0,
+    batterUp: false,
     out: false,
     outMeta: {
       kind: null,

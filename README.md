@@ -47,6 +47,8 @@ event
   gameStatus: null,
   runsScored: 1,
 
+  batterUp: false,
+
   out: true,
   outMeta: {
     kind: 'fly',
@@ -86,6 +88,9 @@ event
 
 - `runsScored`: number
   - how many runs were scored on the play
+
+- `batterUp`: boolean
+  - whether a batter just showed up to bat
 
 - `gameStatus`: null || string
   - will be `null` or one of:
