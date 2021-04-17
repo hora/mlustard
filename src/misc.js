@@ -1,6 +1,7 @@
 const util = require('./util');
 
-const checkMaximumBlaseball = (analysis, eventData) => {
+const check = (analysis, eventData) => {
+  // check for maximum blaseball
   let balls, bases, outs, strikes;
 
   if (eventData.topOfInning) {
@@ -25,19 +26,6 @@ const checkMaximumBlaseball = (analysis, eventData) => {
     eventData.baserunnerCount === bases - 1
   ) {
     analysis.maximumBlaseball = true;
-  }
-};
-
-const check = (analysis, eventData) => {
-  const update = util.getUpdateText(eventData);
-
-  checkMaximumBlaseball(analysis, eventData);
-
-  // check for whether a batter just showed up to bat
-  if (
-    update.indexOf('batting for') >= 0
-  ) {
-    analysis.batterUp = true;
   }
 
 };
