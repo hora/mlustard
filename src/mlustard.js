@@ -5,6 +5,7 @@ const steals = require('./steals');
 const walks = require('./walks');
 const special = require('./special');
 const misc = require('./misc');
+const baseRunners = require('./base-runners');
 
 /*
  * sets all known (aka implemented) analysis results to their defauls
@@ -89,6 +90,16 @@ const misc = require('./misc');
  *     - flickering
  *     - consumersAttack
  *
+ * baseRunners: object with the following props, representing bases
+ *   - first
+ *   - second
+ *   - third
+ *   - fourth
+ *   - if there is a baserunner on the given base, the value for that base
+ *     will be an object with the following props:
+ *     - playerName
+ *     - playerId
+ *
  * maximumBlaseball: boolean
  *   - true when we're at MAXIMUM BLASEBALL
  */
@@ -129,6 +140,13 @@ const initAnalysis = (eventData) => {
       kind: null,
     },
 
+    baseRunners: {
+      first: {},
+      second: {},
+      third: {},
+      fourth: {},
+    },
+
     maximumBlaseball: false,
 
   };
@@ -147,6 +165,7 @@ const analyzeGameEvent = (eventData) => {
     steals,
     special,
     misc,
+    baseRunners,
   ];
 
   for (const checker of checkers) {

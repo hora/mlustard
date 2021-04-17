@@ -142,6 +142,18 @@ event
 - `walk`: boolean
   - true when there is a walk on the play
 
+- `baseRunners`: object, with the props
+  - `first`
+  - `second`
+  - `third`
+  - `fourth`
+  - all these props are objects, and if there is a runner on that given base,
+    they have the following props:
+      - `playerName`: string
+        - the name of the player on base, or empty string
+      - `playerId`: string
+        - the ID of the player on base
+
 - `special`: boolean
   - true when there was a special event on the play
 - `specialMeta`: object, with the props:

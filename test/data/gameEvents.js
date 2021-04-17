@@ -3216,5 +3216,7 @@ module.exports = {
   consumersDefend,
   batter,
   batterAlready: grandSlam,
+  runnerFirst: hit,
+  runners1and2: stealHome,
 };
 
