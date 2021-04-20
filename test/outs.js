@@ -83,6 +83,24 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'runsScored', 0);
     });
 
+    it('should register an out as fielders choice', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.fieldersChoice);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'fieldersChoice');
+      assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'gameStatus', null);
+    });
+
+    it('should register a double play as an out', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.doublePlay);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'doublePlay');
+      assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'gameStatus', 'halfInningEnd');
+    });
+
   });
 });
 

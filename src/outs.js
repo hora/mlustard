@@ -15,6 +15,14 @@ const check = (analysis, eventData) => {
     update.indexOf('strikes out') >= 0
   ) {
     analysis.outMeta.kind = 'strike';
+  } else if (
+    update.indexOf('fielder\'s choice') >= 0
+  ) {
+    analysis.outMeta.kind = 'fieldersChoice';
+  } else if (
+    update.indexOf('a double play') >= 0
+  ) {
+    analysis.outMeta.kind = 'doublePlay';
   }
 
   if (
