@@ -22,6 +22,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'id', undefined);
       assert.propertyVal(analysis, 'gameStatus', null);
       assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'batterUp', false);
       // outs
       assert.propertyVal(analysis, 'out', false);
       assert.isObject(analysis.outMeta);
@@ -45,6 +46,12 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'special', false);
       assert.isObject(analysis.specialMeta);
       assert.propertyVal(analysis.specialMeta, 'kind', null);
+      // base runners
+      assert.isObject(analysis.baseRunners);
+      assert.isObject(analysis.baseRunners.first);
+      assert.isObject(analysis.baseRunners.second);
+      assert.isObject(analysis.baseRunners.third);
+      assert.isObject(analysis.baseRunners.fourth);
       // maximum blaseball
       assert.propertyVal(analysis, 'maximumBlaseball', false);
 
