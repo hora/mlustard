@@ -138,6 +138,52 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.specialMeta, 'kind', 'consumersAttackDefended');
     });
 
+    it('should register overflowing runs from solar panels', ()=> {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.runsOverflowing);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'runsOverflowing');
+      assert.propertyVal(analysis.specialMeta.details, 'runsGained', 1.8);
+      assert.propertyVal(analysis.specialMeta.details, 'runsOverflowingFor', 'away');
+    });
+
+    it('should register runs collected by solar panels', ()=> {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.runsCollected);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'runsCollected');
+      assert.propertyVal(analysis.specialMeta.details, 'runsCollected', 1.8);
+      assert.propertyVal(analysis.specialMeta.details, 'runsCollectedFrom', 'away');
+    });
+
+    it('should register a win from activating sun 2', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.sun2Smiles);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'sun2');
+      assert.propertyVal(analysis.specialMeta.details, 'runsCollected', 10);
+      assert.propertyVal(analysis.specialMeta.details, 'winSetUpon', 'home');
+    });
+
+    it('should register a black hole swallows event', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.blackHoleSwallows);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'blackHole');
+      assert.propertyVal(analysis.specialMeta.details, 'runsCollected', 10);
+      assert.propertyVal(analysis.specialMeta.details, 'winSwallowedFrom', 'home');
+    });
+
+    it('should register a black hole steals event', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.blackHoleSteals);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'blackHole');
+      assert.propertyVal(analysis.specialMeta.details, 'runsCollected', 10);
+      assert.propertyVal(analysis.specialMeta.details, 'winSwallowedFrom', 'away');
+      assert.propertyVal(analysis.specialMeta.details, 'playerStolen', 'Mira Lemma');
+    });
+
   });
 });
 

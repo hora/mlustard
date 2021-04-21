@@ -91,6 +91,35 @@ const check = (analysis, eventData) => {
       runsStolen,
       runsStolenFrom,
     }
+  } else if (
+    update.indexOf('runs are overflowing') >= 0
+  ) {
+    analysis.specialMeta.kind = 'runsOverflowing';
+
+    analysis.specialMeta.details = {
+      runsGained: util.getNumber(update, null, / unruns/),
+      runsOverflowingFor: util.getTeam(eventData, update, /\n/, / gain/),
+    };
+
+  } else if (
+    update.indexOf('solar panels absorb') >= 0
+  ) {
+    analysis.specialMeta.kind = 'runsCollected';
+
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, / runs are collected/),
+      runsCollectedFrom: util.getTeam(eventData, update, /saved for the /, /'s next game/),
+    };
+
+  } else if (
+    update.indexOf('sun 2 smiles') >= 0
+  ){
+    analysis.specialMeta.kind = 'sun2';
+
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, /! sun 2 smiles/),
+      winSetUpon: util.getTeam(eventData, update, /set a win upon the /, /\./),
+    };
   }
 
   if (analysis.specialMeta.kind) {
