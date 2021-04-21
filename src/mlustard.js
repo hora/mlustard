@@ -27,6 +27,7 @@ const baseRunners = require('./base-runners');
  *   - secondHalfInningStart, when the second half of an inning is starting
  *   - halfInningEnd, when any half of an inning is ending on the play
  *   - gameEnd, when the game has ended
+ *   - inningRewind, when the salmon swim upstream
  *
  * out: boolean
  *   - true when there is an out on the play
@@ -89,6 +90,8 @@ const baseRunners = require('./base-runners');
  *     - unstable
  *     - flickering
  *     - consumersAttack
+ *     - salmon
+ *   - details: object, with props depending on the type of event
  *
  * baseRunners: object with the following props, representing bases
  *   - first

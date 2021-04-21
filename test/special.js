@@ -111,6 +111,26 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
     });
 
+    it('should register a salmon run with no runs scored & inning do-over', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.salmonNoSteal);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
+      assert.propertyVal(analysis.specialMeta.details, 'runsStolen', 0);
+      assert.propertyVal(analysis.specialMeta.details, 'runsStolenFrom', '');
+      assert.propertyVal(analysis, 'gameStatus', 'inningRewind');
+    });
+
+    it('should register a salmon run with runs scored & inning do-over', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.salmonSteal);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
+      assert.propertyVal(analysis.specialMeta.details, 'runsStolen', 4);
+      assert.propertyVal(analysis.specialMeta.details, 'runsStolenFrom', 'away');
+      assert.propertyVal(analysis, 'gameStatus', 'inningRewind');
+    });
+
     it('should register a defended consumer attack', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.consumersDefend);
 

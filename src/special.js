@@ -76,7 +76,21 @@ const check = (analysis, eventData) => {
     update.indexOf('salmon swim upstream') >= 0
   ) {
     analysis.specialMeta.kind = 'salmon';
-    // todo: keep an eye on what this can do to runs, innings
+
+    const runs = update.match(/(\d+) of the (.*)'s runs are lost/);
+    let runsStolen = 0;
+    let runsStolenFrom = '';
+
+    if (runs) {
+      runsStolen = Number(runs[1]);
+      runsStolenFrom = (runs[2] === eventData.homeTeamNickname) ? 'home' : 'away';
+    }
+
+    analysis.gameStatus = 'inningRewind';
+    analysis.specialMeta.details = {
+      runsStolen,
+      runsStolenFrom,
+    }
   }
 
   if (analysis.specialMeta.kind) {

@@ -41,7 +41,21 @@ var check = function check(analysis, eventData) {
       analysis.specialMeta.kind = 'consumersAttack';
     }
   } else if (update.indexOf('salmon swim upstream') >= 0) {
-    analysis.specialMeta.kind = 'salmon'; // todo: keep an eye on what this can do to runs, innings
+    analysis.specialMeta.kind = 'salmon';
+    var runs = update.match(/(\d+) of the (.*)'s runs are lost/);
+    var runsStolen = 0;
+    var runsStolenFrom = '';
+
+    if (runs) {
+      runsStolen = Number(runs[1]);
+      runsStolenFrom = runs[2] === eventData.homeTeamNickname ? 'home' : 'away';
+    }
+
+    analysis.gameStatus = 'inningRewind';
+    analysis.specialMeta.details = {
+      runsStolen: runsStolen,
+      runsStolenFrom: runsStolenFrom
+    };
   }
 
   if (analysis.specialMeta.kind) {
