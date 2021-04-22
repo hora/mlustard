@@ -31,6 +31,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.outMeta, 'sacrifice', false);
       assert.isObject(analysis.outMeta.sacrificeMeta);
       assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', null);
+      assert.propertyVal(analysis.outMeta, 'freeRefill', false);
       // hits
       assert.propertyVal(analysis, 'hit', false);
       assert.isObject(analysis.hitMeta);

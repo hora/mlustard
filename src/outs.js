@@ -55,6 +55,10 @@ const check = (analysis, eventData) => {
       analysis.gameStatus = 'halfInningEnd';
     }
 
+    if (update.indexOf('free refill') >= 0) {
+      analysis.outMeta.freeRefill = true;
+    }
+
     return true;
   }
 

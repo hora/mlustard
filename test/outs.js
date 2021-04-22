@@ -120,6 +120,16 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'unrunsScored', 0.3);
     });
 
+    it('should register a refilled out on the play', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.freeRefill);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'ground');
+      assert.propertyVal(analysis.outMeta, 'freeRefill', true);
+      assert.propertyVal(analysis, 'runsScored', 1);
+    });
+
   });
 });
 

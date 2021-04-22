@@ -49,6 +49,8 @@ const baseRunners = require('./base-runners');
  *       - will be one of:
  *       - advance
  *       - score
+ *   - freeRefill: boolean
+ *     - true when batter used their free refill on the play
  *
  * hit: boolean
  *   - true when there is a hit on the play
@@ -126,6 +128,7 @@ const initAnalysis = (eventData) => {
       sacrificeMeta: {
         kind: null,
       },
+      freeRefill: false,
     },
 
     hit: false,
