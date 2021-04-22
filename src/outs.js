@@ -38,7 +38,9 @@ const check = (analysis, eventData) => {
       update.indexOf('scores') >= 0
     ) {
       analysis.outMeta.sacrificeMeta.kind = 'score';
-      analysis.runsScored = 1;
+      if (!eventData?.scoreUpdate) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
     } else if (
       update.indexOf('advance') >= 0
     ) {

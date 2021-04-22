@@ -22,6 +22,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'id', undefined);
       assert.propertyVal(analysis, 'gameStatus', null);
       assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'unrunsScored', 0);
       assert.propertyVal(analysis, 'batterUp', false);
       // outs
       assert.propertyVal(analysis, 'out', false);

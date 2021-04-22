@@ -473,6 +473,104 @@ const doublePlay = {
   "homeTeamSecondaryColor": "#b063c1"
 };
 
+const sacrificeDecimalScore = {
+  "id": "2cef0cf6-b56e-41ef-a0ae-502d96c8237f",
+  "day": 73,
+  "phase": 6,
+  "rules": "4ae9d46a-5408-460a-84fb-cbd8d03fff6c",
+  "shame": false,
+  "state": {},
+  "inning": 2,
+  "season": 16,
+  "weather": 15,
+  "awayOdds": 0.44155437791259644,
+  "awayOuts": 3,
+  "awayTeam": "a37f9158-7f82-46bc-908c-c9e2dda7c33b",
+  "homeOdds": 0.5584456220874036,
+  "homeOuts": 3,
+  "homeTeam": "57ec08cc-0411-4643-b304-0e80dbc15ac7",
+  "outcomes": [],
+  "awayBalls": 4,
+  "awayBases": 4,
+  "awayScore": 0,
+  "finalized": false,
+  "gameStart": true,
+  "homeBalls": 4,
+  "homeBases": 4,
+  "homeScore": 2.5,
+  "playCount": 96,
+  "stadiumId": "2841dc8c-b5a2-4b3a-a717-9e646e8e29fc",
+  "statsheet": "95fb658c-9eb4-4c50-ba01-afeece33b6cb",
+  "atBatBalls": 0,
+  "awayBatter": null,
+  "homeBatter": null,
+  "lastUpdate": "Yong Wright hit a ground out to Baby Doyle.\nNagomi Mcdaniel advances on the sacrifice.",
+  "tournament": -1,
+  "awayPitcher": "b348c037-eefc-4b81-8edd-dfa96188a97e",
+  "awayStrikes": 3,
+  "baseRunners": [
+      "f236bd5b-4ff1-4154-a3cd-7cb3c0ddaa5b",
+      "f4ca437c-c31c-4508-afe7-6dae4330d717"
+  ],
+  "homePitcher": "7007cbd3-7c7b-44fd-9d6b-393e82b1c06e",
+  "homeStrikes": 3,
+  "repeatCount": 0,
+  "scoreLedger": "(1 Run), Nagomi Mcdaniel is Wired! (0.5 Runs)",
+  "scoreUpdate": "1.5 Runs scored!",
+  "seriesIndex": 2,
+  "terminology": "b67e9bbb-1495-4e1b-b517-f1444b0a6c8b",
+  "topOfInning": false,
+  "atBatStrikes": 0,
+  "awayTeamName": "Breckenridge Jazz Hands",
+  "gameComplete": false,
+  "homeTeamName": "Mexico City Wild Wings",
+  "isPostseason": false,
+  "isTitleMatch": false,
+  "queuedEvents": [],
+  "seriesLength": 3,
+  "awayBatterMod": "",
+  "awayTeamColor": "#6388ad",
+  "awayTeamEmoji": "0x1F450",
+  "basesOccupied": [
+      2,
+      1
+  ],
+  "homeBatterMod": "",
+  "homeTeamColor": "#d15700",
+  "homeTeamEmoji": "0x1F357",
+  "awayBatterName": "",
+  "awayPitcherMod": "",
+  "baseRunnerMods": [
+      "",
+      "BLASERUNNING"
+  ],
+  "gameStartPhase": 18,
+  "halfInningOuts": 2,
+  "homeBatterName": "",
+  "homePitcherMod": "",
+  "newInningPhase": -1,
+  "topInningScore": 0,
+  "awayPitcherName": "Lowe -orb--",
+  "baseRunnerNames": [
+      "Tai Beanbag",
+      "Fran Beans"
+  ],
+  "baserunnerCount": 2,
+  "halfInningScore": 1.5,
+  "homePitcherName": "Rafael Davids",
+  "awayTeamNickname": "Jazz Hands",
+  "homeTeamNickname": "Wild Wings",
+  "secretBaserunner": null,
+  "bottomInningScore": 1.5,
+  "awayTeamBatterCount": 9,
+  "homeTeamBatterCount": 14,
+  "awayTeamSecondaryColor": "#7ba9d7",
+  "homeTeamSecondaryColor": "#ee6300"
+};
+
+const coffeeUnruns = {
+};
+
 module.exports = {
   flyout,
   groundOut,
@@ -482,5 +580,7 @@ module.exports = {
   sacrificeAdvance,
   fieldersChoice,
   doublePlay,
+  coffeeUnruns,
+  sacrificeDecimalScore,
 };
 

@@ -73,14 +73,24 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'runsScored', 1);
     });
 
-    it('should register a sacrifice as an out, with no run scored', () => {
+    it('should register a sacrifice as an out, with a run scored', () => {
       const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeAdvance);
 
       assert.propertyVal(analysis, 'out', true);
       assert.propertyVal(analysis.outMeta, 'kind', 'ground');
       assert.propertyVal(analysis.outMeta, 'sacrifice', true);
       assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'advance');
-      assert.propertyVal(analysis, 'runsScored', 0);
+      assert.propertyVal(analysis, 'runsScored', 1);
+    });
+
+    it('should register a sacrifice as an out, with 1.5 runs scored', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.sacrificeDecimalScore);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'ground');
+      assert.propertyVal(analysis.outMeta, 'sacrifice', true);
+      assert.propertyVal(analysis.outMeta.sacrificeMeta, 'kind', 'advance');
+      assert.propertyVal(analysis, 'runsScored', 1.5);
     });
 
     it('should register an out as fielders choice', () => {

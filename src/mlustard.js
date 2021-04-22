@@ -17,6 +17,9 @@ const baseRunners = require('./base-runners');
  * runsScored: number
  *   - how many runs were scored on the play
  *
+ * unrunsScored: number
+ *   - how many unruns were scored on the play
+ *
  * batterUp: boolean
  *   - whether a batter just showed up to bat
  *
@@ -112,6 +115,7 @@ const initAnalysis = (eventData) => {
 
     gameStatus: null,
     runsScored: 0,
+    unrunsScored: 0,
 
     batterUp: false,
 

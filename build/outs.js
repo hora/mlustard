@@ -24,7 +24,11 @@ var check = function check(analysis, eventData) {
 
     if (update.indexOf('scores') >= 0) {
       analysis.outMeta.sacrificeMeta.kind = 'score';
-      analysis.runsScored = 1;
+
+      if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate)) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
+
     } else if (update.indexOf('advance') >= 0) {
       analysis.outMeta.sacrificeMeta.kind = 'advance';
     }

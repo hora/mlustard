@@ -25,11 +25,12 @@ var check = function check(analysis, eventData) {
     } else if (update.search(/steal.*fourth/) !== -1) {
       analysis.stealMeta.baseStolen = 3; // this may have been a run if there are 4 bases in play
 
-      if (analysis.stealMeta.success && (eventData === null || eventData === void 0 ? void 0 : eventData.homeBatter) !== null && (eventData === null || eventData === void 0 ? void 0 : eventData.awayBases) === 4) {
+      if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate) && analysis.stealMeta.success && (eventData === null || eventData === void 0 ? void 0 : eventData.homeBatter) !== null && (eventData === null || eventData === void 0 ? void 0 : eventData.awayBases) === 4) {
         analysis.runsScored = 1;
-      } else if (analysis.stealMeta.success && (eventData === null || eventData === void 0 ? void 0 : eventData.awayBatter) !== null && (eventData === null || eventData === void 0 ? void 0 : eventData.homeBases) === 4) {
+      } else if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate) && analysis.stealMeta.success && (eventData === null || eventData === void 0 ? void 0 : eventData.awayBatter) !== null && (eventData === null || eventData === void 0 ? void 0 : eventData.homeBases) === 4) {
         analysis.runsScored = 1;
-      }
+      } // otherwise scores are captured in src/misc.js
+
     } else if (update.search(/steal.*home/) !== -1) {
       // see if home or away stole the base
       if ((eventData === null || eventData === void 0 ? void 0 : eventData.homeBatter) !== null) {
@@ -43,7 +44,10 @@ var check = function check(analysis, eventData) {
         analysis.stealMeta.baseStolen = 3;
       }
 
-      analysis.runsScored = 1;
+      if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate)) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
+
     }
   }
 };

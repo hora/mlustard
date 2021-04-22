@@ -70,14 +70,18 @@ const check = (analysis, eventData) => {
       analysis.hitMeta.bigBucket = true;
     }
 
-    // from s12 onward, scores on the play are in the scoreUpdate field
-    const scoreUpdate = eventData?.scoreUpdate || '';
-    if (scoreUpdate) {
-      analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
+     //from s12 onward, scores on the play are in the scoreUpdate field
+    //const scoreUpdate = eventData?.scoreUpdate || '';
+    //if (scoreUpdate) {
+      //analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
 
-    } else { // s2 - s11: no scoreUpdate, have to deduce from the update
+    // if there's no scoreUpdate, deduce the score from the update
+    // this is the case for games between s2 & s11
+    if(!eventData?.scoreUpdate) {
       checkHitRbiPreS12(analysis, update);
     }
+
+    // score updates from s12 onward registered in src/misc.js
 
     return true;
   }

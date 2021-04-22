@@ -55,17 +55,18 @@ var check = function check(analysis, eventData) {
 
     if (update.indexOf('ball lands in a big bucket') >= 0) {
       analysis.hitMeta.bigBucket = true;
-    } // from s12 onward, scores on the play are in the scoreUpdate field
+    } //from s12 onward, scores on the play are in the scoreUpdate field
+    //const scoreUpdate = eventData?.scoreUpdate || '';
+    //if (scoreUpdate) {
+    //analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
+    // if there's no scoreUpdate, deduce the score from the update
+    // this is the case for games between s2 & s11
 
 
-    var scoreUpdate = (eventData === null || eventData === void 0 ? void 0 : eventData.scoreUpdate) || '';
-
-    if (scoreUpdate) {
-      analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
-    } else {
-      // s2 - s11: no scoreUpdate, have to deduce from the update
+    if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate)) {
       checkHitRbiPreS12(analysis, update);
-    }
+    } // score updates from s12 onward registered in src/misc.js
+
 
     return true;
   }
