@@ -12,10 +12,10 @@ var checkHitRbiPreS12 = function checkHitRbiPreS12(analysis, update) {
   // at the end of the update as "...! x scores"
 
 
-  var match = update.match(/! (\d+) scores/);
+  var runs = util.getNumber(update, /! /, / scores/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[1]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   } // if a solo home run was hit, update contains the text "solo home run"
 
@@ -27,10 +27,10 @@ var checkHitRbiPreS12 = function checkHitRbiPreS12(analysis, update) {
   // run"
 
 
-  match = update.match(/(\d+)-run home run/);
+  runs = util.getNumber(update, null, /-run home run/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[0]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   }
 };
@@ -61,7 +61,7 @@ var check = function check(analysis, eventData) {
     var scoreUpdate = (eventData === null || eventData === void 0 ? void 0 : eventData.scoreUpdate) || '';
 
     if (scoreUpdate) {
-      analysis.runsScored = parseInt(scoreUpdate.match(/^\d+/)[0]) || 0;
+      analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
     } else {
       // s2 - s11: no scoreUpdate, have to deduce from the update
       checkHitRbiPreS12(analysis, update);
