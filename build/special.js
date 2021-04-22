@@ -74,7 +74,18 @@ var check = function check(analysis, eventData) {
       runsCollected: util.getNumber(update, null, /! sun 2 smiles/),
       winSetUpon: util.getTeam(eventData, update, /set a win upon the /, /\./)
     };
-  }
+  } else if (update.indexOf('black hole swallows') >= 0) {
+    analysis.specialMeta.kind = 'blackHole';
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, /collect /, /!/),
+      winSwallowedFrom: util.getTeam(eventData, update, /swallows the runs and a /, / win./)
+    }; // see if carcinization triggered by the black hole
+
+    if (update.indexOf('the baltimore crabs steal') >= 0) {
+      analysis.specialMeta.details.playerStolen = util.getPlayer(eventData, update, /crabs steal /, / for the remainder/);
+    }
+  } // if we found something, then:
+
 
   if (analysis.specialMeta.kind) {
     analysis.special = true;

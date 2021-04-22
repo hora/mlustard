@@ -28,11 +28,39 @@ var getNumber = function getNumber(s, pre, post) {
   var regex = new RegExp(pre.source + numRegex.source + post.source);
   var matches = regex[Symbol.match](s);
 
-  if (matches[1]) {
+  if (matches && matches[1]) {
     num = Number(matches[1]) || num;
   }
 
   return num;
+};
+/*
+ * will look through s for a match between pre and post
+ * pre is regex to prepend to the match
+ * post is regex to append to the match
+ * will return the match, or an empty string
+ */
+
+
+var getMatch = function getMatch(eventData, s, pre, post) {
+  var matchRegex = /(.*)/;
+
+  if (!pre) {
+    pre = new RegExp('');
+  }
+
+  if (!post) {
+    post = new RegExp('');
+  }
+
+  var regex = new RegExp(pre.source + matchRegex.source + post.source);
+  var matches = regex[Symbol.match](s);
+
+  if (matches && matches[1]) {
+    return matches[1];
+  }
+
+  return '';
 };
 /*
  * will look through s for a team name
@@ -43,32 +71,38 @@ var getNumber = function getNumber(s, pre, post) {
 
 
 var getTeam = function getTeam(eventData, s, pre, post) {
-  var team = '';
-  var teamRegex = /(.*)/;
+  var team = getMatch(eventData, s, pre, post);
 
-  if (!pre) {
-    pre = new RegExp('');
-  }
-
-  if (!post) {
-    post = new RegExp('');
-  }
-
-  var regex = new RegExp(pre.source + teamRegex.source + post.source);
-  var matches = regex[Symbol.match](s);
-
-  if (matches[1]) {
-    console.log('\n\n\n');
-    console.log(matches);
-    console.log('\n\n\n');
-    team = eventData.homeTeamNickname.toLowerCase() === matches[1] ? 'home' : 'away';
+  if (team) {
+    team = eventData.homeTeamNickname.toLowerCase() === team ? 'home' : 'away';
   }
 
   return team;
 };
 
+var titleCase = function titleCase(s) {
+  return s.split(' ').map(function (word) {
+    if (word) {
+      return "".concat(word[0].toUpperCase()).concat(word.slice(1));
+    }
+  }).join(' ');
+};
+/*
+ * will look through s for a player name
+ * pre is regex to prepend to the regex for the team name
+ * post is regex to append to the regex the team name
+ * will return the player name or ''
+ */
+
+
+var getPlayer = function getPlayer(eventData, s, pre, post) {
+  var player = getMatch(eventData, s, pre, post);
+  return titleCase(player);
+};
+
 module.exports = {
   getUpdateText: getUpdateText,
   getNumber: getNumber,
-  getTeam: getTeam
+  getTeam: getTeam,
+  getPlayer: getPlayer
 };
