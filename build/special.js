@@ -42,20 +42,22 @@ var check = function check(analysis, eventData) {
     }
   } else if (update.indexOf('salmon swim upstream') >= 0) {
     analysis.specialMeta.kind = 'salmon';
-    var runs = update.match(/(\d+) of the (.*)'s runs are lost/);
-    var runsStolen = 0;
-    var runsStolenFrom = '';
+    analysis.gameStatus = 'inningRewind'; // first, grab all the sentences with which team lost how many runs
 
-    if (runs) {
-      runsStolen = Number(runs[1]);
-      runsStolenFrom = runs[2] === eventData.homeTeamNickname ? 'home' : 'away';
+    var teams = update.match(/(\d+(\.\d+)?) of the .*'s runs are lost/g);
+
+    if (teams) {
+      var runsStolen = teams.map(function (team) {
+        return util.getNumber(team, null, null) || 0;
+      });
+      var runsStolenFrom = teams.map(function (team) {
+        return util.getTeam(eventData, team, /of the /, /'s runs/);
+      });
+      analysis.specialMeta.details = {
+        runsStolen: runsStolen,
+        runsStolenFrom: runsStolenFrom
+      };
     }
-
-    analysis.gameStatus = 'inningRewind';
-    analysis.specialMeta.details = {
-      runsStolen: runsStolen,
-      runsStolenFrom: runsStolenFrom
-    };
   } else if (update.indexOf('runs are overflowing') >= 0) {
     analysis.specialMeta.kind = 'runsOverflowing';
     analysis.specialMeta.details = {

@@ -116,8 +116,7 @@ describe('mlustard', () => {
 
       assert.propertyVal(analysis, 'special', true);
       assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
-      assert.propertyVal(analysis.specialMeta.details, 'runsStolen', 0);
-      assert.propertyVal(analysis.specialMeta.details, 'runsStolenFrom', '');
+      assert.isUndefined(analysis.specialMeta.details);
       assert.propertyVal(analysis, 'gameStatus', 'inningRewind');
     });
 
@@ -126,8 +125,18 @@ describe('mlustard', () => {
 
       assert.propertyVal(analysis, 'special', true);
       assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
-      assert.propertyVal(analysis.specialMeta.details, 'runsStolen', 4);
-      assert.propertyVal(analysis.specialMeta.details, 'runsStolenFrom', 'away');
+      assert.deepPropertyVal(analysis.specialMeta.details, 'runsStolen', [4]);
+      assert.deepPropertyVal(analysis.specialMeta.details, 'runsStolenFrom', ['away']);
+      assert.propertyVal(analysis, 'gameStatus', 'inningRewind');
+    });
+
+    it('should register a salmon run with runs scored from both teams & inning do-over', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.salmonMultipleSteals);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'salmon');
+      assert.deepPropertyVal(analysis.specialMeta.details, 'runsStolen', [3, 2]);
+      assert.deepPropertyVal(analysis.specialMeta.details, 'runsStolenFrom', ['home', 'away']);
       assert.propertyVal(analysis, 'gameStatus', 'inningRewind');
     });
 

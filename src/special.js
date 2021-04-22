@@ -76,21 +76,26 @@ const check = (analysis, eventData) => {
     update.indexOf('salmon swim upstream') >= 0
   ) {
     analysis.specialMeta.kind = 'salmon';
-
-    const runs = update.match(/(\d+) of the (.*)'s runs are lost/);
-    let runsStolen = 0;
-    let runsStolenFrom = '';
-
-    if (runs) {
-      runsStolen = Number(runs[1]);
-      runsStolenFrom = (runs[2] === eventData.homeTeamNickname) ? 'home' : 'away';
-    }
-
     analysis.gameStatus = 'inningRewind';
-    analysis.specialMeta.details = {
-      runsStolen,
-      runsStolenFrom,
+
+    // first, grab all the sentences with which team lost how many runs
+    const teams = update.match(/(\d+(\.\d+)?) of the .*'s runs are lost/g);
+
+    if (teams) {
+      let runsStolen = teams.map((team) => {
+        return util.getNumber(team, null, null) || 0;
+      });
+
+      let runsStolenFrom = teams.map((team) => {
+        return util.getTeam(eventData, team, /of the /, /'s runs/);
+      });
+
+      analysis.specialMeta.details = {
+        runsStolen,
+        runsStolenFrom,
+      };
     }
+
   } else if (
     update.indexOf('runs are overflowing') >= 0
   ) {
