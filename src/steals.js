@@ -18,6 +18,7 @@ const check = (analysis, eventData) => {
       analysis.stealMeta.success = true;
     }
 
+    // baseStolen is 0-indexed
     if (
       update.search(/steal.*first/) !== -1
     ) {
@@ -71,6 +72,15 @@ const check = (analysis, eventData) => {
       if (!eventData?.scoreUpdate) {
         analysis.runsScored = 1;
       } // otherwise scores are captured in src/misc.js
+    }
+
+    // check for blaserunning scores pre s-12 (otherwise captured in
+    // src/misc.js)
+    if (
+      !eventData?.scoreUpdate &&
+      update.indexOf('blaserunning') >= 0
+    ) {
+      analysis.runsScored = util.getNumber(update, /scores /, / with blaserunning/);
     }
   }
 

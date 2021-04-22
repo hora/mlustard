@@ -15,7 +15,7 @@ var getUpdateText = function getUpdateText(eventData) {
 
 var getNumber = function getNumber(s, pre, post) {
   var num = null;
-  var numRegex = /(\d+(\.\d+)?)/;
+  var numRegex = /((\d+)?(\.\d+)?)/;
 
   if (!pre) {
     pre = new RegExp('');

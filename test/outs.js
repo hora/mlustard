@@ -111,6 +111,15 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'gameStatus', 'halfInningEnd');
     });
 
+    it('should count unruns on a triple threat strikeout', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.coffeeUnruns);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'strike');
+      assert.propertyVal(analysis, 'unrunsScored', 0.3);
+    });
+
   });
 });
 

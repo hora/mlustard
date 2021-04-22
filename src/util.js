@@ -10,7 +10,7 @@ const getUpdateText = (eventData) => {
  */
 const getNumber = (s, pre, post) => {
   let num = null;
-  let numRegex = /(\d+(\.\d+)?)/;
+  let numRegex = /((\d+)?(\.\d+)?)/;
 
   if (!pre) {
     pre = new RegExp('');

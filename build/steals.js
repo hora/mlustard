@@ -14,7 +14,8 @@ var check = function check(analysis, eventData) {
       analysis.outMeta.kind = 'caughtStealing';
     } else {
       analysis.stealMeta.success = true;
-    }
+    } // baseStolen is 0-indexed
+
 
     if (update.search(/steal.*first/) !== -1) {
       analysis.stealMeta.baseStolen = 0;
@@ -48,6 +49,12 @@ var check = function check(analysis, eventData) {
         analysis.runsScored = 1;
       } // otherwise scores are captured in src/misc.js
 
+    } // check for blaserunning scores pre s-12 (otherwise captured in
+    // src/misc.js)
+
+
+    if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate) && update.indexOf('blaserunning') >= 0) {
+      analysis.runsScored = util.getNumber(update, /scores /, / with blaserunning/);
     }
   }
 };

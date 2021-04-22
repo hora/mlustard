@@ -76,6 +76,25 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.outMeta, 'kind', 'caughtStealing');
     });
 
+    it('should register a successful steal, with a blaserunning score on the play pre s12', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.blaserunningOld);
+
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', true);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 1);
+      assert.propertyVal(analysis, 'runsScored', 0.2);
+    });
+
+    it('should register a successful steal, with a blaserunning score on the play post s12', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.blaserunning);
+
+      assert.propertyVal(analysis, 'steal', true);
+      assert.isObject(analysis.stealMeta);
+      assert.propertyVal(analysis.stealMeta, 'success', true);
+      assert.propertyVal(analysis.stealMeta, 'baseStolen', 2);
+      assert.propertyVal(analysis, 'runsScored', 0.7);
+    });
   });
 });
 
