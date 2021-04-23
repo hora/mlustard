@@ -38,7 +38,7 @@ const getNumber = (s, pre, post) => {
  * post is regex to append to the match
  * will return the match, or an empty string
  */
-const getMatch = (eventData, s, pre, post) => {
+const getMatch = (s, pre, post) => {
   let matchRegex = /(.*)/;
 
   if (!pre) {
@@ -68,7 +68,7 @@ const getMatch = (eventData, s, pre, post) => {
  * will return 'home' 'away' or ''
  */
 const getTeam = (eventData, s, pre, post) => {
-  let team = getMatch(eventData, s, pre, post);
+  let team = getMatch(s, pre, post);
 
   if (team) {
     team = (eventData.homeTeamNickname.toLowerCase() === team) ? 'home' : 'away';
@@ -78,6 +78,8 @@ const getTeam = (eventData, s, pre, post) => {
 };
 
 const titleCase = (s) => {
+  if (!s) { return };
+
   return s.split(' ').map((word) => {
     if (word) {
       return `${word[0].toUpperCase()}${word.slice(1)}`;
@@ -91,10 +93,38 @@ const titleCase = (s) => {
  * post is regex to append to the regex the team name
  * will return the player name or ''
  */
-const getPlayer = (eventData, s, pre, post) => {
-  const player = getMatch(eventData, s, pre, post);
+const getPlayer = (s, pre, post) => {
+  const player = getMatch(s, pre, post);
 
   return titleCase(player);
+};
+
+const getSkateTricks = (update) => {
+  let grindTrick,
+      grindScore,
+      landTrick,
+      landScore;
+
+  const tricks = update.match(/ a (.*) \((\d+)/g);
+
+  // grind trick
+  if (tricks[0]) {
+    grindTrick = titleCase(getMatch(tricks[0], /a /, / \(/));
+    grindScore = getNumber(tricks[0], /\(/, /$/);
+  }
+
+  // land trick
+  if (tricks[1]) {
+    landTrick = titleCase(getMatch(tricks[1], /a /, / \(/));
+    landScore = getNumber(tricks[1], /\(/, /$/);
+  }
+
+  return {
+    grindTrick,
+    grindScore,
+    landTrick,
+    landScore,
+  };
 };
 
 module.exports = {
@@ -102,5 +132,6 @@ module.exports = {
   getNumber,
   getTeam,
   getPlayer,
+  getSkateTricks,
 };
 

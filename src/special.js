@@ -137,8 +137,35 @@ const check = (analysis, eventData) => {
 
     // see if carcinization triggered by the black hole
     if (update.indexOf('the baltimore crabs steal') >= 0) {
-      analysis.specialMeta.details.playerStolen = util.getPlayer(eventData, update, /crabs steal /, / for the remainder/);
+      analysis.specialMeta.details.playerStolen = util.getPlayer(update, /crabs steal /, / for the remainder/);
     }
+  } else if (
+    update.indexOf('grind rail') >= 0
+  ) {
+    analysis.specialMeta.kind = 'grindRail';
+
+    const tricks = util.getSkateTricks(update);
+
+    analysis.specialMeta.details = {
+      player: util.getPlayer(update, /^/, / hops on/),
+      ...tricks,
+    };
+
+    if (update.indexOf('safe!') >= 0) {
+      analysis.specialMeta.details = {
+        ...analysis.specialMeta.details,
+        grindSuccess: true,
+      };
+    } else { // out!
+      analysis.specialMeta.details = {
+        ...analysis.specialMeta.details,
+        grindSuccess: false,
+      };
+
+      analysis.out = true;
+      analysis.outMeta.kind = 'railBail';
+    }
+
   }
 
   // if we found something, then:

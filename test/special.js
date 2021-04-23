@@ -193,6 +193,35 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.specialMeta.details, 'playerStolen', 'Mira Lemma');
     });
 
+    it('should register a skate trick, safe', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.railSafe);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'grindRail');
+      assert.propertyVal(analysis.specialMeta.details, 'player', 'Engine Eberhardt');
+      assert.propertyVal(analysis.specialMeta.details, 'grindSuccess', true);
+      assert.propertyVal(analysis.specialMeta.details, 'grindTrick', 'Hot Lasagna');
+      assert.propertyVal(analysis.specialMeta.details, 'grindScore', 2020);
+      assert.propertyVal(analysis.specialMeta.details, 'landTrick', '90210');
+      assert.propertyVal(analysis.specialMeta.details, 'landScore', 1928);
+      assert.propertyVal(analysis, 'out', false);
+    });
+
+    it('should register a skate trick, out', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.railBail);
+
+      assert.propertyVal(analysis, 'special', true);
+      assert.propertyVal(analysis.specialMeta, 'kind', 'grindRail');
+      assert.propertyVal(analysis.specialMeta.details, 'player', 'Bauer Zimmerman');
+      assert.propertyVal(analysis.specialMeta.details, 'grindSuccess', false);
+      assert.propertyVal(analysis.specialMeta.details, 'grindTrick', 'Spacewalk');
+      assert.propertyVal(analysis.specialMeta.details, 'grindScore', 1148);
+      assert.isUndefined(analysis.specialMeta.details.landTrick);
+      assert.isUndefined(analysis.specialMeta.details.landScore);
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'railBail');
+    });
+
   });
 });
 

@@ -42,7 +42,7 @@ var getNumber = function getNumber(s, pre, post) {
  */
 
 
-var getMatch = function getMatch(eventData, s, pre, post) {
+var getMatch = function getMatch(s, pre, post) {
   var matchRegex = /(.*)/;
 
   if (!pre) {
@@ -71,7 +71,7 @@ var getMatch = function getMatch(eventData, s, pre, post) {
 
 
 var getTeam = function getTeam(eventData, s, pre, post) {
-  var team = getMatch(eventData, s, pre, post);
+  var team = getMatch(s, pre, post);
 
   if (team) {
     team = eventData.homeTeamNickname.toLowerCase() === team ? 'home' : 'away';
@@ -81,6 +81,11 @@ var getTeam = function getTeam(eventData, s, pre, post) {
 };
 
 var titleCase = function titleCase(s) {
+  if (!s) {
+    return;
+  }
+
+  ;
   return s.split(' ').map(function (word) {
     if (word) {
       return "".concat(word[0].toUpperCase()).concat(word.slice(1));
@@ -95,14 +100,38 @@ var titleCase = function titleCase(s) {
  */
 
 
-var getPlayer = function getPlayer(eventData, s, pre, post) {
-  var player = getMatch(eventData, s, pre, post);
+var getPlayer = function getPlayer(s, pre, post) {
+  var player = getMatch(s, pre, post);
   return titleCase(player);
+};
+
+var getSkateTricks = function getSkateTricks(update) {
+  var grindTrick, grindScore, landTrick, landScore;
+  var tricks = update.match(/ a (.*) \((\d+)/g); // grind trick
+
+  if (tricks[0]) {
+    grindTrick = titleCase(getMatch(tricks[0], /a /, / \(/));
+    grindScore = getNumber(tricks[0], /\(/, /$/);
+  } // land trick
+
+
+  if (tricks[1]) {
+    landTrick = titleCase(getMatch(tricks[1], /a /, / \(/));
+    landScore = getNumber(tricks[1], /\(/, /$/);
+  }
+
+  return {
+    grindTrick: grindTrick,
+    grindScore: grindScore,
+    landTrick: landTrick,
+    landScore: landScore
+  };
 };
 
 module.exports = {
   getUpdateText: getUpdateText,
   getNumber: getNumber,
   getTeam: getTeam,
-  getPlayer: getPlayer
+  getPlayer: getPlayer,
+  getSkateTricks: getSkateTricks
 };
