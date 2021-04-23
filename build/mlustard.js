@@ -83,6 +83,10 @@ var baseRunners = require('./base-runners');
  *
  * walk: boolean
  *   - true when there is a walk on the play
+ * walkMeta: object, with the props:
+ *   - mindTrick: boolean
+ *     - true when the pitches used a mind trick to turn the walk into a
+ *       strikeout
  *
  * special: boolean
  *   - true when there was a special event on the play
@@ -148,6 +152,9 @@ var initAnalysis = function initAnalysis(eventData) {
       baseStolen: null
     },
     walk: false,
+    walkMeta: {
+      mindTrick: false
+    },
     special: false,
     specialMeta: {
       kind: null

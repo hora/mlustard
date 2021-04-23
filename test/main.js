@@ -44,6 +44,7 @@ describe('mlustard', () => {
       assert.propertyVal(analysis.stealMeta, 'baseStolen', null);
       // walk
       assert.propertyVal(analysis, 'walk', false);
+      assert.propertyVal(analysis.walkMeta, 'mindTrick', false);
       // special
       assert.propertyVal(analysis, 'special', false);
       assert.isObject(analysis.specialMeta);

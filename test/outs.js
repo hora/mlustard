@@ -130,6 +130,15 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'runsScored', 1);
     });
 
+    it('should register a mind trick out on the play', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.mindTrickOut);
+
+      assert.propertyVal(analysis, 'out', true);
+      assert.isObject(analysis.outMeta);
+      assert.propertyVal(analysis.outMeta, 'kind', 'strike');
+      assert.propertyVal(analysis.outMeta, 'mindTrick', true);
+    });
+
   });
 });
 

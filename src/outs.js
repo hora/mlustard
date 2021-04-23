@@ -59,6 +59,10 @@ const check = (analysis, eventData) => {
       analysis.outMeta.freeRefill = true;
     }
 
+    if (update.indexOf('uses a mind trick') >= 0) {
+      analysis.outMeta.mindTrick = true;
+    }
+
     return true;
   }
 

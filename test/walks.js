@@ -20,6 +20,15 @@ describe('mlustard', () => {
       assert.propertyVal(analysis, 'runsScored', 1);
     });
 
+    it('should register a walk on the play, and a strike out, thanks to the mind trick', () => {
+      const analysis = mlustard.analyzeGameEvent(gameEvents.mindTrickWalk);
+
+      assert.propertyVal(analysis, 'walk', true);
+      assert.propertyVal(analysis.walkMeta, 'mindTrick', true);
+      assert.propertyVal(analysis, 'out', true);
+      assert.propertyVal(analysis.outMeta, 'kind', 'strike');
+    });
+
   });
 });
 
