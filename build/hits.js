@@ -12,10 +12,10 @@ var checkHitRbiPreS12 = function checkHitRbiPreS12(analysis, update) {
   // at the end of the update as "...! x scores"
 
 
-  var match = update.match(/! (\d+) scores/);
+  var runs = util.getNumber(update, /! /, / scores/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[1]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   } // if a solo home run was hit, update contains the text "solo home run"
 
@@ -27,10 +27,10 @@ var checkHitRbiPreS12 = function checkHitRbiPreS12(analysis, update) {
   // run"
 
 
-  match = update.match(/(\d+)-run home run/);
+  runs = util.getNumber(update, null, /-run home run/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[0]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   }
 };
@@ -55,17 +55,18 @@ var check = function check(analysis, eventData) {
 
     if (update.indexOf('ball lands in a big bucket') >= 0) {
       analysis.hitMeta.bigBucket = true;
-    } // from s12 onward, scores on the play are in the scoreUpdate field
+    } //from s12 onward, scores on the play are in the scoreUpdate field
+    //const scoreUpdate = eventData?.scoreUpdate || '';
+    //if (scoreUpdate) {
+    //analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
+    // if there's no scoreUpdate, deduce the score from the update
+    // this is the case for games between s2 & s11
 
 
-    var scoreUpdate = (eventData === null || eventData === void 0 ? void 0 : eventData.scoreUpdate) || '';
-
-    if (scoreUpdate) {
-      analysis.runsScored = parseInt(scoreUpdate.match(/^\d+/)[0]) || 0;
-    } else {
-      // s2 - s11: no scoreUpdate, have to deduce from the update
+    if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate)) {
       checkHitRbiPreS12(analysis, update);
-    }
+    } // score updates from s12 onward registered in src/misc.js
+
 
     return true;
   }

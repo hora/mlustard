@@ -1,5 +1,11 @@
 "use strict";
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var util = require('./util');
 
 var check = function check(analysis, eventData) {
@@ -41,8 +47,72 @@ var check = function check(analysis, eventData) {
       analysis.specialMeta.kind = 'consumersAttack';
     }
   } else if (update.indexOf('salmon swim upstream') >= 0) {
-    analysis.specialMeta.kind = 'salmon'; // todo: keep an eye on what this can do to runs, innings
-  }
+    analysis.specialMeta.kind = 'salmon';
+    analysis.gameStatus = 'inningRewind'; // first, grab all the sentences with which team lost how many runs
+
+    var teams = update.match(/(\d+(\.\d+)?) of the .*'s runs are lost/g);
+
+    if (teams) {
+      var runsStolen = teams.map(function (team) {
+        return util.getNumber(team, null, null) || 0;
+      });
+      var runsStolenFrom = teams.map(function (team) {
+        return util.getTeam(eventData, team, /of the /, /'s runs/);
+      });
+      analysis.specialMeta.details = {
+        runsStolen: runsStolen,
+        runsStolenFrom: runsStolenFrom
+      };
+    }
+  } else if (update.indexOf('runs are overflowing') >= 0) {
+    analysis.specialMeta.kind = 'runsOverflowing';
+    analysis.specialMeta.details = {
+      runsGained: util.getNumber(update, null, / unruns/),
+      runsOverflowingFor: util.getTeam(eventData, update, /\n/, / gain/)
+    };
+  } else if (update.indexOf('solar panels absorb') >= 0) {
+    analysis.specialMeta.kind = 'runsCollected';
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, / runs are collected/),
+      runsCollectedFrom: util.getTeam(eventData, update, /saved for the /, /'s next game/)
+    };
+  } else if (update.indexOf('sun 2 smiles') >= 0) {
+    analysis.specialMeta.kind = 'sun2';
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, /! sun 2 smiles/),
+      winSetUpon: util.getTeam(eventData, update, /set a win upon the /, /\./)
+    };
+  } else if (update.indexOf('black hole swallows') >= 0) {
+    analysis.specialMeta.kind = 'blackHole';
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, /collect /, /!/),
+      winSwallowedFrom: util.getTeam(eventData, update, /swallows the runs and a /, / win./)
+    }; // see if carcinization triggered by the black hole
+
+    if (update.indexOf('the baltimore crabs steal') >= 0) {
+      analysis.specialMeta.details.playerStolen = util.getPlayer(update, /crabs steal /, / for the remainder/);
+    }
+  } else if (update.indexOf('grind rail') >= 0) {
+    analysis.specialMeta.kind = 'grindRail';
+    var tricks = util.getSkateTricks(update);
+    analysis.specialMeta.details = _objectSpread({
+      player: util.getPlayer(update, /^/, / hops on/)
+    }, tricks);
+
+    if (update.indexOf('safe!') >= 0) {
+      analysis.specialMeta.details = _objectSpread(_objectSpread({}, analysis.specialMeta.details), {}, {
+        grindSuccess: true
+      });
+    } else {
+      // out!
+      analysis.specialMeta.details = _objectSpread(_objectSpread({}, analysis.specialMeta.details), {}, {
+        grindSuccess: false
+      });
+      analysis.out = true;
+      analysis.outMeta.kind = 'railBail';
+    }
+  } // if we found something, then:
+
 
   if (analysis.specialMeta.kind) {
     analysis.special = true;

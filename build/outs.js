@@ -11,6 +11,10 @@ var check = function check(analysis, eventData) {
     analysis.outMeta.kind = 'ground';
   } else if (update.indexOf('strikes out') >= 0) {
     analysis.outMeta.kind = 'strike';
+  } else if (update.indexOf('fielder\'s choice') >= 0) {
+    analysis.outMeta.kind = 'fieldersChoice';
+  } else if (update.indexOf('a double play') >= 0) {
+    analysis.outMeta.kind = 'doublePlay';
   }
 
   if (update.indexOf('sacrifice') >= 0) {
@@ -20,7 +24,11 @@ var check = function check(analysis, eventData) {
 
     if (update.indexOf('scores') >= 0) {
       analysis.outMeta.sacrificeMeta.kind = 'score';
-      analysis.runsScored = 1;
+
+      if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate)) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
+
     } else if (update.indexOf('advance') >= 0) {
       analysis.outMeta.sacrificeMeta.kind = 'advance';
     }
@@ -31,6 +39,14 @@ var check = function check(analysis, eventData) {
 
     if ((eventData === null || eventData === void 0 ? void 0 : eventData.halfInningOuts) === 0) {
       analysis.gameStatus = 'halfInningEnd';
+    }
+
+    if (update.indexOf('free refill') >= 0) {
+      analysis.outMeta.freeRefill = true;
+    }
+
+    if (update.indexOf('uses a mind trick') >= 0) {
+      analysis.outMeta.mindTrick = true;
     }
 
     return true;

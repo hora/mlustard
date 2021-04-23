@@ -28,9 +28,19 @@ const checkMaximumBlaseball = (analysis, eventData) => {
   }
 };
 
+const checkScoreUpdate = (analysis, eventData) => {
+  const scoreUpdate = eventData?.scoreUpdate?.toLowerCase();
+
+  if (scoreUpdate) {
+    analysis.runsScored = util.getNumber(scoreUpdate, null, / runs? score/);
+    analysis.unrunsScored = util.getNumber(scoreUpdate, null, / unruns? score/);
+  }
+};
+
 const check = (analysis, eventData) => {
   const update = util.getUpdateText(eventData);
 
+  checkScoreUpdate(analysis, eventData);
   checkMaximumBlaseball(analysis, eventData);
 
   // check for whether a batter just showed up to bat

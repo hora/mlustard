@@ -25,6 +25,9 @@ var baseRunners = require('./base-runners');
  * runsScored: number
  *   - how many runs were scored on the play
  *
+ * unrunsScored: number
+ *   - how many unruns were scored on the play
+ *
  * batterUp: boolean
  *   - whether a batter just showed up to bat
  *
@@ -35,6 +38,7 @@ var baseRunners = require('./base-runners');
  *   - secondHalfInningStart, when the second half of an inning is starting
  *   - halfInningEnd, when any half of an inning is ending on the play
  *   - gameEnd, when the game has ended
+ *   - inningRewind, when the salmon swim upstream
  *
  * out: boolean
  *   - true when there is an out on the play
@@ -53,6 +57,8 @@ var baseRunners = require('./base-runners');
  *       - will be one of:
  *       - advance
  *       - score
+ *   - freeRefill: boolean
+ *     - true when batter used their free refill on the play
  *
  * hit: boolean
  *   - true when there is a hit on the play
@@ -77,6 +83,10 @@ var baseRunners = require('./base-runners');
  *
  * walk: boolean
  *   - true when there is a walk on the play
+ * walkMeta: object, with the props:
+ *   - mindTrick: boolean
+ *     - true when the pitches used a mind trick to turn the walk into a
+ *       strikeout
  *
  * special: boolean
  *   - true when there was a special event on the play
@@ -97,6 +107,8 @@ var baseRunners = require('./base-runners');
  *     - unstable
  *     - flickering
  *     - consumersAttack
+ *     - salmon
+ *   - details: object, with props depending on the type of event
  *
  * baseRunners: object with the following props, representing bases
  *   - first
@@ -118,6 +130,7 @@ var initAnalysis = function initAnalysis(eventData) {
     id: eventData.id || eventData._id,
     gameStatus: null,
     runsScored: 0,
+    unrunsScored: 0,
     batterUp: false,
     out: false,
     outMeta: {
@@ -125,7 +138,8 @@ var initAnalysis = function initAnalysis(eventData) {
       sacrifice: false,
       sacrificeMeta: {
         kind: null
-      }
+      },
+      freeRefill: false
     },
     hit: false,
     hitMeta: {
@@ -138,6 +152,9 @@ var initAnalysis = function initAnalysis(eventData) {
       baseStolen: null
     },
     walk: false,
+    walkMeta: {
+      mindTrick: false
+    },
     special: false,
     specialMeta: {
       kind: null

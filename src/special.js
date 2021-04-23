@@ -76,9 +76,99 @@ const check = (analysis, eventData) => {
     update.indexOf('salmon swim upstream') >= 0
   ) {
     analysis.specialMeta.kind = 'salmon';
-    // todo: keep an eye on what this can do to runs, innings
+    analysis.gameStatus = 'inningRewind';
+
+    // first, grab all the sentences with which team lost how many runs
+    const teams = update.match(/(\d+(\.\d+)?) of the .*'s runs are lost/g);
+
+    if (teams) {
+      let runsStolen = teams.map((team) => {
+        return util.getNumber(team, null, null) || 0;
+      });
+
+      let runsStolenFrom = teams.map((team) => {
+        return util.getTeam(eventData, team, /of the /, /'s runs/);
+      });
+
+      analysis.specialMeta.details = {
+        runsStolen,
+        runsStolenFrom,
+      };
+    }
+
+  } else if (
+    update.indexOf('runs are overflowing') >= 0
+  ) {
+    analysis.specialMeta.kind = 'runsOverflowing';
+
+    analysis.specialMeta.details = {
+      runsGained: util.getNumber(update, null, / unruns/),
+      runsOverflowingFor: util.getTeam(eventData, update, /\n/, / gain/),
+    };
+
+  } else if (
+    update.indexOf('solar panels absorb') >= 0
+  ) {
+    analysis.specialMeta.kind = 'runsCollected';
+
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, / runs are collected/),
+      runsCollectedFrom: util.getTeam(eventData, update, /saved for the /, /'s next game/),
+    };
+
+  } else if (
+    update.indexOf('sun 2 smiles') >= 0
+  ){
+    analysis.specialMeta.kind = 'sun2';
+
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, null, /! sun 2 smiles/),
+      winSetUpon: util.getTeam(eventData, update, /set a win upon the /, /\./),
+    };
+  } else if (
+    update.indexOf('black hole swallows') >= 0
+  ) {
+    analysis.specialMeta.kind = 'blackHole';
+
+    analysis.specialMeta.details = {
+      runsCollected: util.getNumber(update, /collect /, /!/),
+      winSwallowedFrom: util.getTeam(eventData, update, /swallows the runs and a /, / win./),
+    };
+
+    // see if carcinization triggered by the black hole
+    if (update.indexOf('the baltimore crabs steal') >= 0) {
+      analysis.specialMeta.details.playerStolen = util.getPlayer(update, /crabs steal /, / for the remainder/);
+    }
+  } else if (
+    update.indexOf('grind rail') >= 0
+  ) {
+    analysis.specialMeta.kind = 'grindRail';
+
+    const tricks = util.getSkateTricks(update);
+
+    analysis.specialMeta.details = {
+      player: util.getPlayer(update, /^/, / hops on/),
+      ...tricks,
+    };
+
+    if (update.indexOf('safe!') >= 0) {
+      analysis.specialMeta.details = {
+        ...analysis.specialMeta.details,
+        grindSuccess: true,
+      };
+    } else { // out!
+      analysis.specialMeta.details = {
+        ...analysis.specialMeta.details,
+        grindSuccess: false,
+      };
+
+      analysis.out = true;
+      analysis.outMeta.kind = 'railBail';
+    }
+
   }
 
+  // if we found something, then:
   if (analysis.specialMeta.kind) {
     analysis.special = true;
 

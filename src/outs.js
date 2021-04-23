@@ -15,6 +15,14 @@ const check = (analysis, eventData) => {
     update.indexOf('strikes out') >= 0
   ) {
     analysis.outMeta.kind = 'strike';
+  } else if (
+    update.indexOf('fielder\'s choice') >= 0
+  ) {
+    analysis.outMeta.kind = 'fieldersChoice';
+  } else if (
+    update.indexOf('a double play') >= 0
+  ) {
+    analysis.outMeta.kind = 'doublePlay';
   }
 
   if (
@@ -30,7 +38,9 @@ const check = (analysis, eventData) => {
       update.indexOf('scores') >= 0
     ) {
       analysis.outMeta.sacrificeMeta.kind = 'score';
-      analysis.runsScored = 1;
+      if (!eventData?.scoreUpdate) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
     } else if (
       update.indexOf('advance') >= 0
     ) {
@@ -43,6 +53,14 @@ const check = (analysis, eventData) => {
 
     if (eventData?.halfInningOuts === 0) {
       analysis.gameStatus = 'halfInningEnd';
+    }
+
+    if (update.indexOf('free refill') >= 0) {
+      analysis.outMeta.freeRefill = true;
+    }
+
+    if (update.indexOf('uses a mind trick') >= 0) {
+      analysis.outMeta.mindTrick = true;
     }
 
     return true;

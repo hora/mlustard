@@ -18,6 +18,7 @@ const check = (analysis, eventData) => {
       analysis.stealMeta.success = true;
     }
 
+    // baseStolen is 0-indexed
     if (
       update.search(/steal.*first/) !== -1
     ) {
@@ -37,18 +38,20 @@ const check = (analysis, eventData) => {
 
       // this may have been a run if there are 4 bases in play
       if (
+        !eventData?.scoreUpdate &&
         analysis.stealMeta.success &&
         eventData?.homeBatter !== null &&
         eventData?.awayBases === 4
       ) {
         analysis.runsScored = 1;
       } else if (
+        !eventData?.scoreUpdate &&
         analysis.stealMeta.success &&
         eventData?.awayBatter !== null &&
         eventData?.homeBases === 4
       ) {
         analysis.runsScored = 1;
-      }
+      } // otherwise scores are captured in src/misc.js
 
     } else if (
       update.search(/steal.*home/) !== -1
@@ -66,7 +69,18 @@ const check = (analysis, eventData) => {
         analysis.stealMeta.baseStolen = 3;
       }
 
-      analysis.runsScored = 1;
+      if (!eventData?.scoreUpdate) {
+        analysis.runsScored = 1;
+      } // otherwise scores are captured in src/misc.js
+    }
+
+    // check for blaserunning scores pre s-12 (otherwise captured in
+    // src/misc.js)
+    if (
+      !eventData?.scoreUpdate &&
+      update.indexOf('blaserunning') >= 0
+    ) {
+      analysis.runsScored = util.getNumber(update, /scores /, / with blaserunning/);
     }
   }
 

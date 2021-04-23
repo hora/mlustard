@@ -10,10 +10,10 @@ const checkHitRbiPreS12 = (analysis, update) => {
 
   // if a single/double/triple was hit & x runs were scored, it shows up
   // at the end of the update as "...! x scores"
-  let match = update.match(/! (\d+) scores/);
+  let runs = util.getNumber(update, /! /, / scores/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[1]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   }
 
@@ -27,10 +27,10 @@ const checkHitRbiPreS12 = (analysis, update) => {
 
   // if a multi-run home run was hit, update contains the text "x-run home
   // run"
-  match = update.match(/(\d+)-run home run/);
+  runs = util.getNumber(update, null, /-run home run/) || 0;
 
-  if (match) {
-    analysis.runsScored = parseInt(match[0]);
+  if (runs) {
+    analysis.runsScored = runs;
     return;
   }
 };
@@ -70,14 +70,18 @@ const check = (analysis, eventData) => {
       analysis.hitMeta.bigBucket = true;
     }
 
-    // from s12 onward, scores on the play are in the scoreUpdate field
-    const scoreUpdate = eventData?.scoreUpdate || '';
-    if (scoreUpdate) {
-      analysis.runsScored = parseInt(scoreUpdate.match(/^\d+/)[0]) || 0;
+     //from s12 onward, scores on the play are in the scoreUpdate field
+    //const scoreUpdate = eventData?.scoreUpdate || '';
+    //if (scoreUpdate) {
+      //analysis.runsScored = util.getNumber(scoreUpdate, null, null) || 0;
 
-    } else { // s2 - s11: no scoreUpdate, have to deduce from the update
+    // if there's no scoreUpdate, deduce the score from the update
+    // this is the case for games between s2 & s11
+    if(!eventData?.scoreUpdate) {
       checkHitRbiPreS12(analysis, update);
     }
+
+    // score updates from s12 onward registered in src/misc.js
 
     return true;
   }
