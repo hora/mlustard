@@ -18,11 +18,11 @@ const check = (analysis, eventData) => {
 
     // check for mind trick shenanigans
     if (
-      update.indexOf('uses a mind trick')
+      update.indexOf('uses a mind trick') >= 0
     ) {
       analysis.walkMeta.mindTrick = true;
 
-      if (update.indexOf('strikes out')) {
+      if (update.indexOf('strikes out') >= 0) {
         analysis.out = true;
         analysis.outMeta.kind = 'strike';
       }
