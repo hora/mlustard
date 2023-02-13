@@ -2,7 +2,7 @@
 
 _"Get out the rye bread and **mlustard**, Grandma, it is grand slalami time!"_
 
-Notdave Niehaus
+[Notdave Niehaus](https://en.wikipedia.org/wiki/Dave_Niehaus#Notable_catchphrases)
 
 **mlustard** takes ~~some rye bread~~
 [Blaseball](https://www.blaseball.com/) game event data, and
