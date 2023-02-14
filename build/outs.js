@@ -5,16 +5,22 @@ var util = require('./util');
 var check = function check(analysis, eventData) {
   var update = util.getUpdateText(eventData);
 
-  if (update.indexOf('flyout') >= 0) {
+  if (/fly\s?out/.test(update)) {
     analysis.outMeta.kind = 'fly';
-  } else if (update.indexOf('ground out') >= 0) {
+  } else if (/ground\s?out/.test(update)) {
     analysis.outMeta.kind = 'ground';
-  } else if (update.indexOf('strikes out') >= 0) {
+  } else if (/strikes.*out/.test(update)) {
     analysis.outMeta.kind = 'strike';
   } else if (update.indexOf('fielder\'s choice') >= 0) {
     analysis.outMeta.kind = 'fieldersChoice';
   } else if (update.indexOf('a double play') >= 0) {
     analysis.outMeta.kind = 'doublePlay';
+  } else if (/makes.*catch/.test(update)) {
+    analysis.outMeta.kind = 'catch';
+  } else if (update.indexOf('forced out') >= 0) {
+    analysis.outMeta.kind = 'forced';
+  } else if (update.indexOf('gets the out') >= 0) {
+    analysis.outMeta.kind = 'unspecified';
   }
 
   if (update.indexOf('sacrifice') >= 0) {

@@ -106,6 +106,7 @@ event
   - `kind`: null || string
     - will be one of:
     - `'fly'`
+    - `'catch'`
     - `'ground'`
     - `'strike'`
     - `'caughtStealing'`

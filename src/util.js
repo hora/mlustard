@@ -1,5 +1,5 @@
 const getUpdateText = (eventData) => {
-  return eventData?.lastUpdate?.toLowerCase() || '';
+  return eventData?.lastUpdate?.toLowerCase() || eventData?.data?.displayText?.toLowerCase() || '';
 };
 
 /*

@@ -1,9 +1,9 @@
 "use strict";
 
 var getUpdateText = function getUpdateText(eventData) {
-  var _eventData$lastUpdate;
+  var _eventData$lastUpdate, _eventData$data, _eventData$data$displ;
 
-  return (eventData === null || eventData === void 0 ? void 0 : (_eventData$lastUpdate = eventData.lastUpdate) === null || _eventData$lastUpdate === void 0 ? void 0 : _eventData$lastUpdate.toLowerCase()) || '';
+  return (eventData === null || eventData === void 0 ? void 0 : (_eventData$lastUpdate = eventData.lastUpdate) === null || _eventData$lastUpdate === void 0 ? void 0 : _eventData$lastUpdate.toLowerCase()) || (eventData === null || eventData === void 0 ? void 0 : (_eventData$data = eventData.data) === null || _eventData$data === void 0 ? void 0 : (_eventData$data$displ = _eventData$data.displayText) === null || _eventData$data$displ === void 0 ? void 0 : _eventData$data$displ.toLowerCase()) || '';
 };
 /*
  * will look through s for a number (supports positive integers & floats),

@@ -13,6 +13,7 @@
     "build": "babel ./src --out-dir ./build",
     "pretest": "npm run build",
     "test": "mocha",
+    "pretest-no-api": "npm run build",
     "test-no-api": "mocha --exclude test/chronicler.js"
   },
   "keywords": [
