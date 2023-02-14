@@ -13,6 +13,7 @@ const CHRONICLER_ONE_SOURCES = [
 
 const CHRONICLER_TWO_SOURCES = [
   require('./chronicler2/outs'),
+  require('./chronicler2/walks'),
 ];
 
 const CHRONICLER_ONE_DATA = {};

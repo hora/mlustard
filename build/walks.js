@@ -5,7 +5,7 @@ var util = require('./util');
 var check = function check(analysis, eventData) {
   var update = util.getUpdateText(eventData);
 
-  if (update.indexOf('draws a walk') >= 0) {
+  if (/(draws|earns) a walk/.test(update)) {
     analysis.walk = true; // check if any runs were scored on the play prior to s12
 
     if (!(eventData !== null && eventData !== void 0 && eventData.scoreUpdate) && update.indexOf('scores') >= 0) {

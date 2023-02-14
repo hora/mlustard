@@ -4,7 +4,7 @@ const check = (analysis, eventData) => {
   const update = util.getUpdateText(eventData);
 
   if (
-    update.indexOf('draws a walk') >= 0
+    /(draws|earns) a walk/.test(update)
   ) {
     analysis.walk = true;
 
