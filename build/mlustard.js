@@ -126,8 +126,16 @@ var baseRunners = require('./base-runners');
 
 
 var initAnalysis = function initAnalysis(eventData) {
+  var chroniclerVersion = 'c1v1';
+
+  if (Object.hasOwn(eventData, 'data')) {
+    chroniclerVersion = 'c2v0';
+  }
+
   return {
-    id: eventData.id || eventData._id,
+    _chroniclerVersion: chroniclerVersion,
+    id: eventData.id || eventData._id || eventData.game_id || '',
+    era: '',
     gameStatus: null,
     runsScored: 0,
     unrunsScored: 0,

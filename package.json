@@ -12,7 +12,8 @@
   "scripts": {
     "build": "babel ./src --out-dir ./build",
     "pretest": "npm run build",
-    "test": "mocha"
+    "test": "mocha",
+    "test-no-api": "mocha --exclude test/chronicler.js"
   },
   "keywords": [
     "blaseball"

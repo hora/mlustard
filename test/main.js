@@ -21,7 +21,7 @@ describe('mlustard', () => {
     it('should return all default analysis values if no event data', () => {
       const analysis = mlustard.analyzeGameEvent(allGameEvents.noData);
 
-      assert.propertyVal(analysis, '_chroniclerVersion', '');
+      assert.propertyVal(analysis, '_chroniclerVersion', 'c1v1');
       assert.propertyVal(analysis, 'id', '');
       assert.propertyVal(analysis, 'era', '');
       assert.propertyVal(analysis, 'gameStatus', null);

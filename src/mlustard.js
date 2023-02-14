@@ -116,8 +116,14 @@ const baseRunners = require('./base-runners');
  *   - true when we're at MAXIMUM BLASEBALL
  */
 const initAnalysis = (eventData) => {
+  let chroniclerVersion = 'c1v1';
+
+  if (Object.hasOwn(eventData, 'data')) {
+    chroniclerVersion = 'c2v0';
+  }
+  
   return {
-    _chroniclerVersion: '',
+    _chroniclerVersion: chroniclerVersion,
     id: eventData.id || eventData._id || eventData.game_id || '',
 
     era: '',

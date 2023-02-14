@@ -1,24 +1,40 @@
-const GAME_DATA_SOURCES = [
-  require('./game-status'),
-  require('./hits'),
-  require('./outs'),
-  require('./special'),
-  require('./steals'),
-  require('./walks'),
+const CHRONICLER_ONE_SOURCES = [
+  require('./chronicler1/game-status'),
+  require('./chronicler1/hits'),
+  require('./chronicler1/outs'),
+  require('./chronicler1/special'),
+  require('./chronicler1/steals'),
+  require('./chronicler1/walks'),
   // the following use game event data declared above so need to be processed
   // last
-  require('./base-runners'),
-  require('./misc'),
+  require('./chronicler1/base-runners'),
+  require('./chronicler1/misc'),
 ];
 
-const GAME_DATA = {};
+const CHRONICLER_TWO_SOURCES = [
+  require('./chronicler2/outs'),
+];
 
-for (let source of GAME_DATA_SOURCES) {
+const CHRONICLER_ONE_DATA = {};
+
+for (let source of CHRONICLER_ONE_SOURCES) {
   for (let sourceData in source) {
     if (typeof(source[sourceData]) === 'string') {
-      GAME_DATA[sourceData] = GAME_DATA[source[sourceData]];
+      CHRONICLER_ONE_DATA[sourceData] = CHRONICLER_ONE_DATA[source[sourceData]];
     } else {
-      GAME_DATA[sourceData] = source[sourceData];
+      CHRONICLER_ONE_DATA[sourceData] = source[sourceData];
+    }
+  }
+}
+
+const CHRONICLER_TWO_DATA = {};
+
+for (let source of CHRONICLER_TWO_SOURCES) {
+  for (let sourceData in source) {
+    if (typeof(source[sourceData]) === 'string') {
+      CHRONICLER_TWO_DATA[sourceData] = CHRONICLER_TWO_DATA[source[sourceData]];
+    } else {
+      CHRONICLER_TWO_DATA[sourceData] = source[sourceData];
     }
   }
 }
@@ -28,6 +44,7 @@ const noData = {
 
 module.exports = {
   noData,
-  chroniclerOne: GAME_DATA,
+  chroniclerOne: CHRONICLER_ONE_DATA,
+  chroniclerTwo: CHRONICLER_TWO_DATA,
 };
 
