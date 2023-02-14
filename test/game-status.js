@@ -1,7 +1,9 @@
 const assert = require('chai').assert;
 
 const mlustard = require('../build/mlustard.js');
-const gameEvents = require('./data/gameEvents.js');
+const allGameEvents = require('./data/gameEvents.js');
+// a bit cursed, but whatevs
+const gameEvents = allGameEvents.chroniclerOne;
 
 describe('mlustard', () => {
   describe('analyzeGameEvent() for game status', () => {

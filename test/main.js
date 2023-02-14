@@ -1,7 +1,9 @@
 const assert = require('chai').assert;
 
 const mlustard = require('../build/mlustard.js');
-const gameEvents = require('./data/gameEvents.js');
+const allGameEvents = require('./data/gameEvents.js');
+// a bit cursed, but whatevs
+const gameEvents = allGameEvents.chroniclerOne;
 
 describe('mlustard', () => {
   describe('analyzeGameEvent()', () => {
@@ -17,9 +19,11 @@ describe('mlustard', () => {
     });
 
     it('should return all default analysis values if no event data', () => {
-      const analysis = mlustard.analyzeGameEvent(gameEvents.noData);
+      const analysis = mlustard.analyzeGameEvent(allGameEvents.noData);
 
-      assert.propertyVal(analysis, 'id', undefined);
+      assert.propertyVal(analysis, '_chroniclerVersion', '');
+      assert.propertyVal(analysis, 'id', '');
+      assert.propertyVal(analysis, 'era', '');
       assert.propertyVal(analysis, 'gameStatus', null);
       assert.propertyVal(analysis, 'runsScored', 0);
       assert.propertyVal(analysis, 'unrunsScored', 0);

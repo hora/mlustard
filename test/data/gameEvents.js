@@ -28,6 +28,6 @@ const noData = {
 
 module.exports = {
   noData,
-  ...GAME_DATA,
+  chroniclerOne: GAME_DATA,
 };
 

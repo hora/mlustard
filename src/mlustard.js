@@ -117,7 +117,10 @@ const baseRunners = require('./base-runners');
  */
 const initAnalysis = (eventData) => {
   return {
-    id: eventData.id || eventData._id,
+    _chroniclerVersion: '',
+    id: eventData.id || eventData._id || eventData.game_id || '',
+
+    era: '',
 
     gameStatus: null,
     runsScored: 0,
