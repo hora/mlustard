@@ -2,6 +2,24 @@
 
 var util = require('./util');
 
+var testForCoronationHits = function testForCoronationHits(update) {
+  // don't have tests for all these verbs, but this is how
+  // hits are described in the coronation era
+  var verbs = ['bats', 'chops', 'clips', //'decent hit',
+  //'depressing hit',
+  'drags', 'dribbles', //'hard hit',
+  'hits', 'knocks', 'nudges', 'pokes', 'punches', 'pushes', 'rolls', //'sad hit',
+  'slaps', 'smacks', //'solid hit',
+  'sputters', //'strong hit',
+  'swats', 'taps', 'thumps', 'trickles', //'weak hit',
+  'whacks'];
+  var verbsSingular = verbs.map(function (verb) {
+    return verb.slice(0, -1);
+  });
+  var regex = new RegExp('\\s(' + verbsSingular.join('|') + ')s?\\s');
+  return regex.test(update);
+};
+
 var checkHitRbiPreS12 = function checkHitRbiPreS12(analysis, update) {
   // from some non-exhaustive research, i think there weren't any grand slams
   // pre-s12 that were not 4 runs
@@ -48,6 +66,8 @@ var check = function check(analysis, eventData) {
     analysis.hitMeta.kind = 'homeRun';
   } else if (update.indexOf('grand slam') >= 0) {
     analysis.hitMeta.kind = 'grandSlam';
+  } else if (testForCoronationHits(update)) {
+    analysis.hit = true;
   }
 
   if (analysis.hitMeta.kind) {

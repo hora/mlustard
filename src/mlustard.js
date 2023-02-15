@@ -14,6 +14,9 @@ const baseRunners = require('./base-runners');
  * id: string || undefined
  *   - the game event ID
  *
+ * score: boolean
+ *   - true when at least one run or unrun is scored on the play
+ *
  * runsScored: number
  *   - how many runs were scored on the play
  *
@@ -129,6 +132,7 @@ const initAnalysis = (eventData) => {
     era: '',
 
     gameStatus: null,
+    score: false,
     runsScored: 0,
     unrunsScored: 0,
 

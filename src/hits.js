@@ -1,5 +1,44 @@
 const util = require('./util');
 
+const testForCoronationHits = (update) => {
+  // don't have tests for all these verbs, but this is how
+  // hits are described in the coronation era
+  const verbs = [
+    'bats',
+    'chops',
+    'clips',
+    //'decent hit',
+    //'depressing hit',
+    'drags',
+    'dribbles',
+    //'hard hit',
+    'hits',
+    'knocks',
+    'nudges',
+    'pokes',
+    'punches',
+    'pushes',
+    'rolls',
+    //'sad hit',
+    'slaps',
+    'smacks',
+    //'solid hit',
+    'sputters',
+    //'strong hit',
+    'swats',
+    'taps',
+    'thumps',
+    'trickles',
+    //'weak hit',
+    'whacks'
+  ];
+
+  const verbsSingular = verbs.map((verb) => verb.slice(0,-1));
+
+  let regex = new RegExp('\\s(' + verbsSingular.join('|') + ')s?\\s');
+  return regex.test(update)
+};
+
 const checkHitRbiPreS12 = (analysis, update) => {
   // from some non-exhaustive research, i think there weren't any grand slams
   // pre-s12 that were not 4 runs
@@ -58,7 +97,11 @@ const check = (analysis, eventData) => {
     update.indexOf('grand slam') >= 0
   ) {
     analysis.hitMeta.kind = 'grandSlam';
-  }
+  } else if (
+    testForCoronationHits(update)
+  ) {
+    analysis.hit = true;
+  } 
 
   if (analysis.hitMeta.kind) {
     analysis.hit = true;

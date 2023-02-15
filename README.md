@@ -45,6 +45,7 @@ event
   id: <the game event id>,
 
   gameStatus: null,
+  score: false,
   runsScored: 1,
 
   batterUp: false,
@@ -86,8 +87,10 @@ event
 - `id`: string || undefined
   - the game event ID
 
+- `score`: boolean
+  - true when at least one run or unrun was scored on the play
 - `runsScored`: number
-  - how many runs were scored on the play
+  - how many runs were scored on the play (not available for Coronation Era)
 
 - `batterUp`: boolean
   - whether a batter just showed up to bat
@@ -123,7 +126,7 @@ event
   - true when there is a hit on the play
 - `hitMeta`: object, with the props:
   - `kind`: null || string
-    - will be one of:
+    - when the information is available (pre-coronation era), this will be one of:
     - `'single'`
     - `'double'`
     - `'triple'`

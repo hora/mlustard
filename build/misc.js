@@ -25,14 +25,14 @@ var checkMaximumBlaseball = function checkMaximumBlaseball(analysis, eventData) 
 };
 
 var checkScoreUpdate = function checkScoreUpdate(analysis, eventData) {
-  var _eventData$scoreUpdat;
+  var _eventData$scoreUpdat, _eventData$data, _eventData$data$chang, _eventData$data2, _eventData$data2$chan;
 
-  var scoreUpdate = eventData === null || eventData === void 0 ? void 0 : (_eventData$scoreUpdat = eventData.scoreUpdate) === null || _eventData$scoreUpdat === void 0 ? void 0 : _eventData$scoreUpdat.toLowerCase();
+  var scoreUpdate = eventData === null || eventData === void 0 ? void 0 : (_eventData$scoreUpdat = eventData.scoreUpdate) === null || _eventData$scoreUpdat === void 0 ? void 0 : _eventData$scoreUpdat.toLowerCase(); // available after s12, in chronicler v1
 
   if (scoreUpdate) {
     analysis.runsScored = util.getNumber(scoreUpdate, null, / runs? score/);
     analysis.unrunsScored = util.getNumber(scoreUpdate, null, / unruns? score/);
-  }
+  } else if (eventData !== null && eventData !== void 0 && (_eventData$data = eventData.data) !== null && _eventData$data !== void 0 && (_eventData$data$chang = _eventData$data.changedState) !== null && _eventData$data$chang !== void 0 && _eventData$data$chang.homeScore || eventData !== null && eventData !== void 0 && (_eventData$data2 = eventData.data) !== null && _eventData$data2 !== void 0 && (_eventData$data2$chan = _eventData$data2.changedState) !== null && _eventData$data2$chan !== void 0 && _eventData$data2$chan.awayScore) {}
 };
 
 var check = function check(analysis, eventData) {

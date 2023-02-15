@@ -31,10 +31,14 @@ const checkMaximumBlaseball = (analysis, eventData) => {
 const checkScoreUpdate = (analysis, eventData) => {
   const scoreUpdate = eventData?.scoreUpdate?.toLowerCase();
 
+  // available after s12, in chronicler v1
   if (scoreUpdate) {
     analysis.runsScored = util.getNumber(scoreUpdate, null, / runs? score/);
     analysis.unrunsScored = util.getNumber(scoreUpdate, null, / unruns? score/);
+  } else if (eventData?.data?.changedState?.homeScore || eventData?.data?.changedState?.awayScore) {
+
   }
+
 };
 
 const check = (analysis, eventData) => {
