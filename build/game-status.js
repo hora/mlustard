@@ -13,12 +13,14 @@ var check = function check(analysis, eventData) {
 
   if (update.indexOf('play ball') >= 0) {
     analysis.gameStatus = 'beforeFirstPitch';
-  } else if (update.indexOf('top of') >= 0) {
+  } else if (/^top of/.test(update)) {
     analysis.gameStatus = 'firstHalfInningStart';
-  } else if (update.indexOf('bottom of') >= 0) {
+  } else if (/^bottom of/.test(update)) {
     analysis.gameStatus = 'secondHalfInningStart';
   } else if (update.indexOf('game over') >= 0 || update.indexOf("".concat(home, " ").concat(homeScore, ", ").concat(away, " ").concat(awayScore)) >= 0 || update.indexOf("".concat(away, " ").concat(awayScore, ", ").concat(home, " ").concat(homeScore)) >= 0) {
     analysis.gameStatus = 'gameEnd';
+  } else if (/end of the (top|bottom)/.test(update)) {
+    analysis.gameStatus = 'halfInningEnd';
   }
 
   if (analysis.gameStatus) {

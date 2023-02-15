@@ -95,8 +95,8 @@ event
 - `gameStatus`: null || string
   - will be `null` or one of:
   - `'beforeFirstPitch'`, when the first pitch hasn't been thrown yet
-  - `'firstHalfInningStart'`, when the first half of an inning is starting
-  - `'secondHalfInningStart'`, when the second half of an inning is starting
+  - `'firstHalfInningStart'`, when the first half of an inning is starting (not available for Coronation Era)
+  - `'secondHalfInningStart'`, when the second half of an inning is starting (not available for Coronation Era)
   - `'halfInningEnd'`, when any half of an inning is ending on the play
   - `'gameEnd'`, when the game has ended
 

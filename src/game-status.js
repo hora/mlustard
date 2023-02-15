@@ -12,11 +12,11 @@ const check = (analysis, eventData) => {
   ) {
     analysis.gameStatus = 'beforeFirstPitch';
   } else if (
-    update.indexOf('top of') >= 0
+    /^top of/.test(update)
   ) {
     analysis.gameStatus = 'firstHalfInningStart';
   } else if (
-    update.indexOf('bottom of') >= 0
+    /^bottom of/.test(update)
   ) {
     analysis.gameStatus = 'secondHalfInningStart';
   } else if (
@@ -25,6 +25,10 @@ const check = (analysis, eventData) => {
     update.indexOf(`${away} ${awayScore}, ${home} ${homeScore}`) >= 0
   ) {
     analysis.gameStatus = 'gameEnd';
+  } else if (
+    /end of the (top|bottom)/.test(update)
+  ) {
+    analysis.gameStatus = 'halfInningEnd';
   }
 
   if (analysis.gameStatus) {
