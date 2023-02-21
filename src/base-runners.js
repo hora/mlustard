@@ -24,6 +24,7 @@ const check = (analysis, eventData) => {
   //const update = util.getUpdateText(eventData);
 
   if (
+    // chron v1
     eventData.baserunnerCount
   ) {
 
@@ -39,6 +40,15 @@ const check = (analysis, eventData) => {
     }
 
     return true;
+  } else if (
+    eventData?.data?.changedState?.baserunners?.length
+  ) {
+    for (let runner of eventData.data.changedState.baserunners) {
+      analysis.baseRunners[BASES[runner.base - 1]] = {
+        playerName: runner.name,
+        playerId: runner.id,
+      }
+    }
   }
 
   return false;
