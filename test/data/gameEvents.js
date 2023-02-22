@@ -18,6 +18,7 @@ const CHRONICLER_TWO_SOURCES = [
   require('./chronicler2/hits'),
   require('./chronicler2/base-runners'),
   require('./chronicler2/special'),
+  require('./chronicler2/misc'),
 ];
 
 const CHRONICLER_ONE_DATA = {};

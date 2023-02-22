@@ -35,8 +35,11 @@ const checkScoreUpdate = (analysis, eventData) => {
   if (scoreUpdate) {
     analysis.runsScored = util.getNumber(scoreUpdate, null, / runs? score/);
     analysis.unrunsScored = util.getNumber(scoreUpdate, null, / unruns? score/);
-  } else if (eventData?.data?.changedState?.homeScore || eventData?.data?.changedState?.awayScore) {
-
+  } else if (
+    eventData?.data?.changedState?.homeScore ||
+    eventData?.data?.changedState?.awayScore
+  ) {
+    analysis.score = true;
   }
 
 };
@@ -49,7 +52,8 @@ const check = (analysis, eventData) => {
 
   // check for whether a batter just showed up to bat
   if (
-    update.indexOf('batting for') >= 0
+    (update.indexOf('batting for') >= 0) ||
+    eventData?.data?.changedState?.batter?.id
   ) {
     analysis.batterUp = true;
   }

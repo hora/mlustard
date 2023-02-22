@@ -32,15 +32,19 @@ var checkScoreUpdate = function checkScoreUpdate(analysis, eventData) {
   if (scoreUpdate) {
     analysis.runsScored = util.getNumber(scoreUpdate, null, / runs? score/);
     analysis.unrunsScored = util.getNumber(scoreUpdate, null, / unruns? score/);
-  } else if (eventData !== null && eventData !== void 0 && (_eventData$data = eventData.data) !== null && _eventData$data !== void 0 && (_eventData$data$chang = _eventData$data.changedState) !== null && _eventData$data$chang !== void 0 && _eventData$data$chang.homeScore || eventData !== null && eventData !== void 0 && (_eventData$data2 = eventData.data) !== null && _eventData$data2 !== void 0 && (_eventData$data2$chan = _eventData$data2.changedState) !== null && _eventData$data2$chan !== void 0 && _eventData$data2$chan.awayScore) {}
+  } else if (eventData !== null && eventData !== void 0 && (_eventData$data = eventData.data) !== null && _eventData$data !== void 0 && (_eventData$data$chang = _eventData$data.changedState) !== null && _eventData$data$chang !== void 0 && _eventData$data$chang.homeScore || eventData !== null && eventData !== void 0 && (_eventData$data2 = eventData.data) !== null && _eventData$data2 !== void 0 && (_eventData$data2$chan = _eventData$data2.changedState) !== null && _eventData$data2$chan !== void 0 && _eventData$data2$chan.awayScore) {
+    analysis.score = true;
+  }
 };
 
 var check = function check(analysis, eventData) {
+  var _eventData$data3, _eventData$data3$chan, _eventData$data3$chan2;
+
   var update = util.getUpdateText(eventData);
   checkScoreUpdate(analysis, eventData);
   checkMaximumBlaseball(analysis, eventData); // check for whether a batter just showed up to bat
 
-  if (update.indexOf('batting for') >= 0) {
+  if (update.indexOf('batting for') >= 0 || eventData !== null && eventData !== void 0 && (_eventData$data3 = eventData.data) !== null && _eventData$data3 !== void 0 && (_eventData$data3$chan = _eventData$data3.changedState) !== null && _eventData$data3$chan !== void 0 && (_eventData$data3$chan2 = _eventData$data3$chan.batter) !== null && _eventData$data3$chan2 !== void 0 && _eventData$data3$chan2.id) {
     analysis.batterUp = true;
   }
 };
