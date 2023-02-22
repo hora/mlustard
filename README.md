@@ -179,6 +179,18 @@ event
     - `'consumersAttack'`
     - `'consumersAttackDefended'`
     - `'salmon'`
+    - `'runsOverflowing'`
+    - `'sun2'`
+    - `'blackHole'`
+    - `'grindRail'`
+    - `'burp'`
+    - `'cantLose'`
+    - `'umpireRulesInFavor'`
+    - `'mageUmpireCallsAlternate'`
+    - `'bardUmpireCurses'`
+    - `'knightUmpireSwears'`
+    - `'rogueUmpireIncinerates'`
+    - `'umpireEvaded'`
 
 - `maximumBlaseball`: boolean
   - true when we're at MAXIMUM BLASEBALL

@@ -8,6 +8,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var util = require('./util');
 
+var checkForUmpireRules = function checkForUmpireRules(analysis, update) {
+  var umpMatch = update.match(/a (bard|mage|knight|rogue) umpire rules in [\w\s]+'s favor/);
+
+  if (umpMatch) {
+    analysis.specialMeta.kind = 'umpireRulesInFavor';
+    analysis.specialMeta.details = {
+      umpire: umpMatch[1]
+    };
+  }
+};
+
+var checkForUmpireEvasion = function checkForUmpireEvasion(analysis, update) {
+  var umpMatch = update.match(/(parries|dodges) (a|the) (bard|mage|knight) umpire's/);
+
+  if (umpMatch) {
+    analysis.specialMeta.kind = 'umpireEvaded';
+    analysis.specialMeta.details = {
+      umpire: umpMatch[3],
+      evasionType: umpMatch[1]
+    };
+  }
+};
+
 var check = function check(analysis, eventData) {
   var update = util.getUpdateText(eventData);
 
@@ -111,8 +134,25 @@ var check = function check(analysis, eventData) {
       analysis.out = true;
       analysis.outMeta.kind = 'railBail';
     }
-  } // if we found something, then:
+  } else if (update.indexOf('burp') >= 0) {
+    analysis.specialMeta.kind = 'burp';
+  } else if (update.indexOf('can\'t lose! they join') >= 0) {
+    analysis.specialMeta.kind = 'cantLose';
+  } else if (/mage umpire calls [\w\s]+'s alternate/.test(update)) {
+    analysis.specialMeta.kind = 'mageUmpireCallsAlternate';
+  } else if (update.indexOf('bard umpire curses') >= 0) {
+    analysis.specialMeta.kind = 'bardUmpireCurses';
+  } else if (update.indexOf('knight swears at') >= 0) {
+    analysis.specialMeta.kind = 'knightUmpireSwears';
+  } else if ( // in previous eras this used to be incinerated (past tense)
+  // adding a new special event for backwards compatibility and
+  // consistency with how other umpire events are registered
+  update.indexOf('rogue umpire incinerates') >= 0) {
+    analysis.specialMeta.kind = 'rogueUmpireIncinerates';
+  }
 
+  checkForUmpireRules(analysis, update);
+  checkForUmpireEvasion(analysis, update); // if we found something, then:
 
   if (analysis.specialMeta.kind) {
     analysis.special = true;

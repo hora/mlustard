@@ -1,5 +1,28 @@
 const util = require('./util');
 
+const checkForUmpireRules = (analysis, update) => {
+  const umpMatch = update.match(/a (bard|mage|knight|rogue) umpire rules in [\w\s]+'s favor/);
+
+  if (umpMatch) {
+    analysis.specialMeta.kind = 'umpireRulesInFavor';
+    analysis.specialMeta.details = {
+      umpire: umpMatch[1],
+    };
+  }
+};
+
+const checkForUmpireEvasion = (analysis, update) => {
+  const umpMatch = update.match(/(parries|dodges) (a|the) (bard|mage|knight) umpire's/);
+
+  if (umpMatch) {
+    analysis.specialMeta.kind = 'umpireEvaded';
+    analysis.specialMeta.details = {
+      umpire: umpMatch[3],
+      evasionType: umpMatch[1],
+    };
+  }
+};
+
 const check = (analysis, eventData) => {
   const update = util.getUpdateText(eventData);
 
@@ -166,7 +189,37 @@ const check = (analysis, eventData) => {
       analysis.outMeta.kind = 'railBail';
     }
 
+  } else if (
+    update.indexOf('burp') >= 0
+  ) {
+    analysis.specialMeta.kind = 'burp';
+  } else if (
+    update.indexOf('can\'t lose! they join') >= 0
+  ) {
+    analysis.specialMeta.kind = 'cantLose';
+  } else if (
+    /mage umpire calls [\w\s]+'s alternate/.test(update)
+  ) {
+    analysis.specialMeta.kind = 'mageUmpireCallsAlternate';
+  } else if (
+    update.indexOf('bard umpire curses') >= 0
+  ) {
+    analysis.specialMeta.kind = 'bardUmpireCurses';
+  } else if (
+    update.indexOf('knight swears at') >= 0
+  ) {
+    analysis.specialMeta.kind = 'knightUmpireSwears';
+  } else if (
+    // in previous eras this used to be incinerated (past tense)
+    // adding a new special event for backwards compatibility and
+    // consistency with how other umpire events are registered
+    update.indexOf('rogue umpire incinerates') >= 0
+  ) {
+    analysis.specialMeta.kind = 'rogueUmpireIncinerates';
   }
+
+  checkForUmpireRules(analysis, update);
+  checkForUmpireEvasion(analysis, update);
 
   // if we found something, then:
   if (analysis.specialMeta.kind) {
