@@ -9,6 +9,7 @@
     }
   ],
   "main": "build/mlustard.js",
+  "types": "lib/mlustard.d.ts",
   "scripts": {
     "build": "babel ./src --out-dir ./build",
     "pretest": "npm run build",
