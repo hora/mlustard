@@ -26,9 +26,13 @@ const check = (analysis, eventData) => {
   ) {
     analysis.gameStatus = 'gameEnd';
   } else if (
-    /end of the (top|bottom)/.test(update)
+    /end of the top/.test(update)
   ) {
-    analysis.gameStatus = 'halfInningEnd';
+    analysis.gameStatus = 'firstHalfInningEnd';
+  } else if (
+    /end of the bottom/.test(update)
+  ) {
+    analysis.gameStatus = 'secondHalfInningEnd';
   }
 
   if (analysis.gameStatus) {

@@ -19,8 +19,10 @@ var check = function check(analysis, eventData) {
     analysis.gameStatus = 'secondHalfInningStart';
   } else if (update.indexOf('game over') >= 0 || update.indexOf("".concat(home, " ").concat(homeScore, ", ").concat(away, " ").concat(awayScore)) >= 0 || update.indexOf("".concat(away, " ").concat(awayScore, ", ").concat(home, " ").concat(homeScore)) >= 0) {
     analysis.gameStatus = 'gameEnd';
-  } else if (/end of the (top|bottom)/.test(update)) {
-    analysis.gameStatus = 'halfInningEnd';
+  } else if (/end of the top/.test(update)) {
+    analysis.gameStatus = 'firstHalfInningEnd';
+  } else if (/end of the bottom/.test(update)) {
+    analysis.gameStatus = 'secondHalfInningEnd';
   }
 
   if (analysis.gameStatus) {

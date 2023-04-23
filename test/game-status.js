@@ -54,13 +54,13 @@ describe('mlustard', () => {
     it('should register that the 2nd half of inning is ending for chron v2', () => {
       const analysis = mlustard.analyzeGameEvent(chroniclerTwo.endSecondHalf);
 
-      assert.propertyVal(analysis, 'gameStatus', 'halfInningEnd');
+      assert.propertyVal(analysis, 'gameStatus', 'secondHalfInningEnd');
     });
 
     it('should register that the 1st half of inning is ending for chron v2', () => {
       const analysis = mlustard.analyzeGameEvent(chroniclerTwo.endFirstHalf);
 
-      assert.propertyVal(analysis, 'gameStatus', 'halfInningEnd');
+      assert.propertyVal(analysis, 'gameStatus', 'firstHalfInningEnd');
     });
 
     it('should register that the game is over for chron v2', () => {
